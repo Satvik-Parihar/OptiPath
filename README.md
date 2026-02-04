@@ -84,7 +84,7 @@ This project is configured for automated deployment to AWS EC2 using GitHub Acti
 
 ### CI/CD Pipeline
 
-The `.github/workflows/deploy.yml` file handles automated deployment.
+The `.github/workflows/deploy.yml` file handles automated deployment. **Status: Configured & Ready.**
 
 **Steps to configure:**
 
