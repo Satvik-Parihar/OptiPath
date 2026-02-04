@@ -17,11 +17,16 @@ app.use('/api/algo', algoRoutes);
 
 // Serve static files from the React app (production only)
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+  const distPath = path.resolve(__dirname, '../frontend/dist');
+  console.log('📁 Serving static files from:', distPath);
+
+  app.use(express.static(distPath));
 
   // Catch-all route for React Router (MUST be last)
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+    const indexPath = path.resolve(distPath, 'index.html');
+    console.log('📄 Sending:', indexPath);
+    res.sendFile(indexPath);
   });
 } else {
   app.get('/', (req, res) => {
@@ -30,5 +35,5 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Server is running on port ${PORT}`);
+  console.log(`✅ Server is running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
 });
