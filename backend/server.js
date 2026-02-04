@@ -18,14 +18,16 @@ app.use('/api/algo', algoRoutes);
 // Serve static files from the React app (production only)
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.resolve(__dirname, '../frontend/dist');
-  console.log('📁 Serving static files from:', distPath);
+  const indexPath = path.resolve(distPath, 'index.html');
 
+  console.log('📁 Serving static files from:', distPath);
+  console.log('📄 Index file:', indexPath);
+
+  // Serve static files
   app.use(express.static(distPath));
 
-  // Catch-all route for React Router (MUST be last)
-  app.get('*', (req, res) => {
-    const indexPath = path.resolve(distPath, 'index.html');
-    console.log('📄 Sending:', indexPath);
+  // Fallback to index.html for client-side routing
+  app.use((req, res) => {
     res.sendFile(indexPath);
   });
 } else {
