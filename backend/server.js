@@ -13,6 +13,11 @@ app.use(express.json());
 
 // Basic health check
 const path = require('path');
+
+// Import Routes
+const algoRoutes = require('./routes/algoRoutes');
+app.use('/api/algo', algoRoutes);
+
 // Serve static files from the React app
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/dist')));
@@ -25,10 +30,6 @@ if (process.env.NODE_ENV === 'production') {
     res.send('OptiPath API is running...');
   });
 }
-
-// Import Routes
-const algoRoutes = require('./routes/algoRoutes');
-app.use('/api/algo', algoRoutes);
 
 // Mongoose connection removed as per user request
 // mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/algo-viz')
