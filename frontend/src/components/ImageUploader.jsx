@@ -203,19 +203,40 @@ const ImageUploader = ({ onUploadSuccess }) => {
 
                 /* ================= 9.jpeg (Directed) ================= */
                 [
-                    { data: { id: '1', label: '1' }, position: { x: 100, y: 100 } },
-                    { data: { id: '2', label: '2' }, position: { x: 300, y: 100 } },
-                    { data: { id: '3', label: '3' }, position: { x: 100, y: 300 } },
-                    { data: { id: '4', label: '4' }, position: { x: 300, y: 300 } },
-                    { data: { id: '5', label: '5' }, position: { x: 500, y: 200 } },
+                    { data: { id: '0', label: '0' }, position: { x: 300, y: 60 } },
 
-                    { data: { id: '2-1', source: '2', target: '1', weight: '3' } },
-                    { data: { id: '1-3', source: '1', target: '3', weight: '6' } },
-                    { data: { id: '1-4', source: '1', target: '4', weight: '3' } },
-                    { data: { id: '4-2', source: '4', target: '2', weight: '1' } },
-                    { data: { id: '4-3', source: '4', target: '3', weight: '2' } },
-                    { data: { id: '5-2', source: '5', target: '2', weight: '4' } },
-                    { data: { id: '5-4', source: '5', target: '4', weight: '2' } }
+                    { data: { id: '1', label: '1' }, position: { x: 180, y: 180 } },
+                    { data: { id: '2', label: '2' }, position: { x: 420, y: 180 } },
+
+                    { data: { id: '3', label: '3' }, position: { x: 100, y: 330 } },
+                    { data: { id: '4', label: '4' }, position: { x: 520, y: 330 } },
+
+                    { data: { id: '5', label: '5' }, position: { x: 180, y: 480 } },
+                    { data: { id: '6', label: '6' }, position: { x: 420, y: 480 } },
+
+                    { data: { id: '7', label: '7' }, position: { x: 300, y: 600 } },
+
+                    /* edges */
+                    { data: { id: '0-1', source: '0', target: '1', weight: '2' } },
+                    { data: { id: '0-2', source: '0', target: '2', weight: '2' } },
+
+                    { data: { id: '2-0', source: '2', target: '0', weight: '9' } },
+
+                    { data: { id: '1-2', source: '1', target: '2', weight: '1' } },
+
+                    { data: { id: '1-3', source: '1', target: '3', weight: '4' } },
+                    { data: { id: '3-1', source: '3', target: '1', weight: '4' } },
+
+                    { data: { id: '2-4', source: '2', target: '4', weight: '2' } },
+
+                    { data: { id: '4-6', source: '4', target: '6', weight: '5' } },
+                    { data: { id: '6-2', source: '6', target: '2', weight: '9' } },
+
+                    { data: { id: '2-5', source: '2', target: '5', weight: '8' } },
+
+                    { data: { id: '5-3', source: '5', target: '3', weight: '9' } },
+
+                    { data: { id: '3-7', source: '3', target: '7', weight: '9' } }
                 ],
 
 
