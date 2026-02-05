@@ -61,6 +61,12 @@ const GraphCanvas = ({ elements, setElements }) => {
             }
         },
         {
+            selector: 'edge.undirected',
+            style: {
+                'target-arrow-shape': 'none'
+            }
+        },
+        {
             selector: '.shortest-path-node',
             style: {
                 'background-color': 'var(--primary)',
