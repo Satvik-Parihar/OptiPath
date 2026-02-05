@@ -31,7 +31,8 @@ const ImageUploader = ({ onUploadSuccess }) => {
 
         setTimeout(() => {
             const templates = [
-                // 0. 1.jpeg: Blue Graph with Cross Connections (Corrected based on visual evidence)
+
+                // 1.jpeg: G1 (Undirected)
                 [
                     { data: { id: 'A', label: 'A' }, position: { x: 50, y: 300 } },
                     { data: { id: 'B', label: 'B' }, position: { x: 250, y: 150 } },
@@ -39,20 +40,21 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'D', label: 'D' }, position: { x: 450, y: 150 } },
                     { data: { id: 'E', label: 'E' }, position: { x: 450, y: 450 } },
                     { data: { id: 'F', label: 'F' }, position: { x: 650, y: 300 } },
+                    // Edges from G1
                     { data: { id: 'A-B', source: 'A', target: 'B', weight: '3' } },
                     { data: { id: 'A-C', source: 'A', target: 'C', weight: '5' } },
-                    { data: { id: 'A-D', source: 'A', target: 'D', weight: '9' } }, // New edge
-                    { data: { id: 'B-D', source: 'B', target: 'D', weight: '4' } },
-                    { data: { id: 'C-E', source: 'C', target: 'E', weight: '6' } }, // Weight changed
-                    { data: { id: 'C-F', source: 'C', target: 'F', weight: '8' } }, // New edge
-                    { data: { id: 'D-F', source: 'D', target: 'F', weight: '2' } },
-                    { data: { id: 'E-F', source: 'E', target: 'F', weight: '5' } },
+                    { data: { id: 'A-D', source: 'A', target: 'D', weight: '9' } },
                     { data: { id: 'B-C', source: 'B', target: 'C', weight: '3' } },
+                    { data: { id: 'B-D', source: 'B', target: 'D', weight: '4' } },
                     { data: { id: 'B-E', source: 'B', target: 'E', weight: '7' } },
                     { data: { id: 'C-D', source: 'C', target: 'D', weight: '2' } },
-                    { data: { id: 'D-E', source: 'D', target: 'E', weight: '2' } }
+                    { data: { id: 'C-E', source: 'C', target: 'E', weight: '6' } },
+                    { data: { id: 'C-F', source: 'C', target: 'F', weight: '8' } },
+                    { data: { id: 'D-E', source: 'D', target: 'E', weight: '2' } },
+                    { data: { id: 'D-F', source: 'D', target: 'F', weight: '2' } },
+                    { data: { id: 'E-F', source: 'E', target: 'F', weight: '5' } }
                 ],
-                // 1. 2.jpeg: Large Star Layout
+                // 2.jpeg: Large Star Layout (Unchanged)
                 [
                     { data: { id: 'A', label: 'A' }, position: { x: 50, y: 300 } },
                     { data: { id: 'B', label: 'B' }, position: { x: 200, y: 100 } },
@@ -69,7 +71,7 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'D-G', source: 'D', target: 'G', weight: '3' } },
                     { data: { id: 'G-H', source: 'G', target: 'H', weight: '6' } }
                 ],
-                // 2. 3.jpeg: Directed Cycle Square
+                // 3.jpeg: Directed Cycle Square (Unchanged)
                 [
                     { data: { id: '1', label: '1' }, position: { x: 200, y: 200 } },
                     { data: { id: '2', label: '2' }, position: { x: 200, y: 400 } },
@@ -81,33 +83,43 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: '4-3', source: '4', target: '3', weight: '2' } },
                     { data: { id: '3-2', source: '3', target: '2', weight: '6' } }
                 ],
-                // 3. 4.jpeg: Complex Directed Pent (Corrected based on user screenshot)
+                // 4.jpeg: G2 (Directed)
                 [
                     { data: { id: 'A', label: 'A' }, position: { x: 300, y: 100 } },
                     { data: { id: 'B', label: 'B' }, position: { x: 500, y: 100 } },
                     { data: { id: 'C', label: 'C' }, position: { x: 100, y: 350 } },
                     { data: { id: 'D', label: 'D' }, position: { x: 300, y: 550 } },
                     { data: { id: 'E', label: 'E' }, position: { x: 600, y: 350 } },
-                    // Edges
+                    // Edges from G2
                     { data: { id: 'A-B', source: 'A', target: 'B', weight: '5' } },
+                    { data: { id: 'A-D', source: 'A', target: 'D', weight: '6' } },
+                    { data: { id: 'A-E', source: 'A', target: 'E', weight: '2' } }, // New from G2 definition
                     { data: { id: 'B-E', source: 'B', target: 'E', weight: '7' } },
-                    { data: { id: 'E-D', source: 'E', target: 'D', weight: '3' } },
-                    { data: { id: 'D-A', source: 'D', target: 'A', weight: '6' } },
-                    { data: { id: 'C-A', source: 'C', target: 'A', weight: '1' } },
-                    { data: { id: 'C-D', source: 'C', target: 'D', weight: '2' } }
+                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' } }, // Loop/Arc
+                    { data: { id: 'C-A', source: 'C', target: 'A', weight: '3' } },
+                    { data: { id: 'C-D', source: 'C', target: 'D', weight: '4' } },
+                    { data: { id: 'D-C', source: 'D', target: 'C', weight: '2' } },
+                    { data: { id: 'D-E', source: 'D', target: 'E', weight: '3' } },
+                    { data: { id: 'E-D', source: 'E', target: 'D', weight: '5' } }
                 ],
-                // 4. 5.jpeg: Circular Example Graph
+                // 5.jpeg: G3 (Directed)
                 [
-                    { data: { id: 'A', label: 'A' }, position: { x: 300, y: 200 } },
-                    { data: { id: 'B', label: 'B' }, position: { x: 500, y: 200 } },
-                    { data: { id: 'C', label: 'C' }, position: { x: 200, y: 450 } },
-                    { data: { id: 'D', label: 'D' }, position: { x: 450, y: 550 } },
-                    { data: { id: 'E', label: 'E' }, position: { x: 650, y: 450 } },
+                    { data: { id: 'A', label: 'A' }, position: { x: 300, y: 100 } },
+                    { data: { id: 'B', label: 'B' }, position: { x: 500, y: 100 } },
+                    { data: { id: 'C', label: 'C' }, position: { x: 100, y: 350 } },
+                    { data: { id: 'D', label: 'D' }, position: { x: 300, y: 550 } },
+                    { data: { id: 'E', label: 'E' }, position: { x: 600, y: 350 } },
+                    // Edges from G3
                     { data: { id: 'A-B', source: 'A', target: 'B', weight: '4' } },
+                    { data: { id: 'A-D', source: 'A', target: 'D', weight: '5' } },
+                    { data: { id: 'A-E', source: 'A', target: 'E', weight: '1' } },
                     { data: { id: 'B-E', source: 'B', target: 'E', weight: '6' } },
-                    { data: { id: 'E-A', source: 'E', target: 'A', weight: '1' } },
-                    { data: { id: 'D-A', source: 'D', target: 'A', weight: '5' } },
-                    { data: { id: 'C-A', source: 'C', target: 'A', weight: '2' } }
+                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' } }, // Loop/Arc
+                    { data: { id: 'C-A', source: 'C', target: 'A', weight: '2' } },
+                    { data: { id: 'C-D', source: 'C', target: 'D', weight: '3' } },
+                    { data: { id: 'D-E', source: 'D', target: 'E', weight: '2' } },
+                    { data: { id: 'D-C', source: 'D', target: 'C', weight: '1' } },
+                    { data: { id: 'E-D', source: 'E', target: 'D', weight: '4' } }
                 ],
                 // 5. 6.jpeg: Large Undirected
                 [
