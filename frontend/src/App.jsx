@@ -194,6 +194,18 @@ function App() {
                     <>
                       <ImageUploader onUploadSuccess={(newElements) => setElements(newElements)} />
 
+                      <div style={{ textAlign: 'center', margin: '16px 0' }}>
+                        <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: '600' }}>OR</span>
+                      </div>
+
+                      <button
+                        onClick={() => setElements([{ data: { id: '1', label: '1' }, position: { x: 400, y: 300 } }])}
+                        className="btn-secondary"
+                        style={{ width: '100%', justifyContent: 'center', marginBottom: '24px', borderStyle: 'dashed', background: 'rgba(99, 102, 241, 0.05)' }}
+                      >
+                        <Plus size={18} /> Create Custom Graph
+                      </button>
+
                       <div style={{ marginTop: '12px', marginBottom: '12px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
                           <label style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: '700', letterSpacing: '0.05em' }}>START NODE</label>

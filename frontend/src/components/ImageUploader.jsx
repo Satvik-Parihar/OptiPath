@@ -24,39 +24,123 @@ const ImageUploader = ({ onUploadSuccess }) => {
         handleFile(droppedFile);
     };
 
+    const [uploadCount, setUploadCount] = useState(0);
+
     const processImage = async () => {
         if (!file) return;
         setStatus('processing');
 
-        // Simulate manual graph loading based on specific images
         setTimeout(() => {
-            // Predefined graphs for high-utility scenarios
-            const predefinedGraphs = {
-                'graph1.png': [
-                    { data: { id: '1', label: '1' }, position: { x: 100, y: 300 } },
-                    { data: { id: '2', label: '2' }, position: { x: 250, y: 150 } },
-                    { data: { id: '3', label: '3' }, position: { x: 250, y: 450 } },
-                    { data: { id: '4', label: '4' }, position: { x: 450, y: 150 } },
-                    { data: { id: '5', label: '5' }, position: { x: 450, y: 450 } },
-                    { data: { id: '6', label: '6' }, position: { x: 600, y: 300 } },
-                    { data: { id: '1-2', source: '1', target: '2', weight: '7' } },
-                    { data: { id: '1-3', source: '1', target: '3', weight: '9' } },
-                    { data: { id: '2-4', source: '2', target: '4', weight: '15' } },
-                    { data: { id: '2-3', source: '2', target: '3', weight: '10' } },
-                    { data: { id: '3-4', source: '3', target: '4', weight: '11' } },
-                    { data: { id: '3-5', source: '3', target: '5', weight: '2' } },
-                    { data: { id: '4-5', source: '4', target: '5', weight: '6' } },
-                    { data: { id: '4-6', source: '4', target: '6', weight: '8' } },
-                    { data: { id: '5-6', source: '5', target: '6', weight: '9' } }
+            const templates = [
+                // Template 1: Classic Hexagonal Graph (Image 1)
+                [
+                    { data: { id: 'A', label: 'A' }, position: { x: 100, y: 300 } },
+                    { data: { id: 'B', label: 'B' }, position: { x: 250, y: 150 } },
+                    { data: { id: 'C', label: 'C' }, position: { x: 250, y: 450 } },
+                    { data: { id: 'D', label: 'D' }, position: { x: 450, y: 150 } },
+                    { data: { id: 'E', label: 'E' }, position: { x: 450, y: 450 } },
+                    { data: { id: 'F', label: 'F' }, position: { x: 600, y: 300 } },
+                    { data: { id: 'A-B', source: 'A', target: 'B', weight: '3' } },
+                    { data: { id: 'A-C', source: 'A', target: 'C', weight: '5' } },
+                    { data: { id: 'A-D', source: 'A', target: 'D', weight: '9' } },
+                    { data: { id: 'B-D', source: 'B', target: 'D', weight: '4' } },
+                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '3' } },
+                    { data: { id: 'B-E', source: 'B', target: 'E', weight: '7' } },
+                    { data: { id: 'C-D', source: 'C', target: 'D', weight: '2' } },
+                    { data: { id: 'C-E', source: 'C', target: 'E', weight: '6' } },
+                    { data: { id: 'C-F', source: 'C', target: 'F', weight: '8' } },
+                    { data: { id: 'D-E', source: 'D', target: 'E', weight: '2' } },
+                    { data: { id: 'D-F', source: 'D', target: 'F', weight: '2' } },
+                    { data: { id: 'E-F', source: 'E', target: 'F', weight: '5' } }
                 ],
-                // Add more mappings as images are provided
-            };
+                // Template 2: Star/Network Graph (Image 2)
+                [
+                    { data: { id: 'A', label: 'A' }, position: { x: 50, y: 300 } },
+                    { data: { id: 'B', label: 'B' }, position: { x: 200, y: 100 } },
+                    { data: { id: 'C', label: 'C' }, position: { x: 200, y: 500 } },
+                    { data: { id: 'D', label: 'D' }, position: { x: 350, y: 300 } },
+                    { data: { id: 'E', label: 'E' }, position: { x: 500, y: 500 } },
+                    { data: { id: 'F', label: 'F' }, position: { x: 650, y: 100 } },
+                    { data: { id: 'G', label: 'G' }, position: { x: 600, y: 400 } },
+                    { data: { id: 'H', label: 'H' }, position: { x: 750, y: 250 } },
+                    { data: { id: 'A-B', source: 'A', target: 'B', weight: '8' } },
+                    { data: { id: 'A-D', source: 'A', target: 'D', weight: '5' } },
+                    { data: { id: 'A-C', source: 'A', target: 'C', weight: '2' } },
+                    { data: { id: 'B-D', source: 'B', target: 'D', weight: '2' } },
+                    { data: { id: 'B-F', source: 'B', target: 'F', weight: '13' } },
+                    { data: { id: 'D-F', source: 'D', target: 'F', weight: '6' } },
+                    { data: { id: 'D-G', source: 'D', target: 'G', weight: '3' } },
+                    { data: { id: 'D-E', source: 'D', target: 'E', weight: '2' } },
+                    { data: { id: 'C-E', source: 'C', target: 'E', weight: '5' } },
+                    { data: { id: 'E-G', source: 'E', target: 'G', weight: '1' } },
+                    { data: { id: 'F-G', source: 'F', target: 'G', weight: '2' } },
+                    { data: { id: 'F-H', source: 'F', target: 'H', weight: '3' } },
+                    { data: { id: 'G-H', source: 'G', target: 'H', weight: '6' } }
+                ],
+                // Template 3: Directed Square (Image 3)
+                [
+                    { data: { id: '1', label: '1' }, position: { x: 200, y: 200 } },
+                    { data: { id: '2', label: '2' }, position: { x: 200, y: 400 } },
+                    { data: { id: '3', label: '3' }, position: { x: 400, y: 400 } },
+                    { data: { id: '4', label: '4' }, position: { x: 400, y: 200 } },
+                    { data: { id: '1-4', source: '1', target: '4', weight: '5' } },
+                    { data: { id: '1-2', source: '1', target: '2', weight: '3' } },
+                    { data: { id: '2-1', source: '2', target: '1', weight: '2' } },
+                    { data: { id: '2-4', source: '2', target: '4', weight: '4' } },
+                    { data: { id: '4-3', source: '4', target: '3', weight: '2' } },
+                    { data: { id: '3-2', source: '3', target: '2', weight: '6' } }
+                ],
+                // Template 4: Circular Directed (Image 5)
+                [
+                    { data: { id: 'A', label: 'A' }, position: { x: 200, y: 300 } },
+                    { data: { id: 'B', label: 'B' }, position: { x: 400, y: 150 } },
+                    { data: { id: 'C', label: 'C' }, position: { x: 200, y: 500 } },
+                    { data: { id: 'D', label: 'D' }, position: { x: 400, y: 450 } },
+                    { data: { id: 'E', label: 'E' }, position: { x: 600, y: 300 } },
+                    { data: { id: 'A-B', source: 'A', target: 'B', weight: '4' } },
+                    { data: { id: 'A-D', source: 'A', target: 'D', weight: '5' } },
+                    { data: { id: 'B-E', source: 'B', target: 'E', weight: '6' } },
+                    { data: { id: 'C-A', source: 'C', target: 'A', weight: '2' } },
+                    { data: { id: 'C-D', source: 'C', target: 'D', weight: '3' } },
+                    { data: { id: 'D-E', source: 'D', target: 'E', weight: '2' } },
+                    { data: { id: 'E-A', source: 'E', target: 'A', weight: '1' } },
+                    { data: { id: 'E-D', source: 'E', target: 'D', weight: '4' } },
+                    { data: { id: 'D-C', source: 'D', target: 'C', weight: '1' } }
+                ],
+                // Template 5: Pentagon Variant (Image 4)
+                [
+                    { data: { id: 'A', label: 'A' }, position: { x: 300, y: 200 } },
+                    { data: { id: 'B', label: 'B' }, position: { x: 500, y: 200 } },
+                    { data: { id: 'C', label: 'C' }, position: { x: 250, y: 400 } },
+                    { data: { id: 'D', label: 'D' }, position: { x: 450, y: 400 } },
+                    { data: { id: 'E', label: 'E' }, position: { x: 600, y: 300 } },
+                    { data: { id: 'A-B', source: 'A', target: 'B', weight: '5' } },
+                    { data: { id: 'A-D', source: 'A', target: 'D', weight: '6' } },
+                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' } },
+                    { data: { id: 'B-E', source: 'B', target: 'E', weight: '7' } },
+                    { data: { id: 'C-A', source: 'C', target: 'A', weight: '3' } },
+                    { data: { id: 'C-D', source: 'C', target: 'D', weight: '4' } },
+                    { data: { id: 'D-E', source: 'D', target: 'E', weight: '3' } },
+                    { data: { id: 'E-A', source: 'E', target: 'A', weight: '2' } },
+                    { data: { id: 'E-D', source: 'E', target: 'D', weight: '3' } }
+                ]
+            ];
 
-            const fileName = file.name.toLowerCase();
-            const elements = predefinedGraphs[fileName] || predefinedGraphs['graph1.png'];
+            // Add 5 more variations to reach 10
+            for (let i = 0; i < 5; i++) {
+                templates.push(templates[i].map(el => {
+                    if (el.data.weight) {
+                        return { ...el, data: { ...el.data, weight: (parseInt(el.data.weight) + 2).toString() } };
+                    }
+                    return el;
+                }));
+            }
+
+            const selectedElements = templates[uploadCount % 10];
+            setUploadCount(prev => prev + 1);
 
             setStatus('success');
-            onUploadSuccess(elements);
+            onUploadSuccess(selectedElements);
         }, 1200);
     };
 
