@@ -101,9 +101,15 @@ const GraphCanvas = ({ elements, setElements }) => {
         const id = (elements.filter(e => !e.data.source).length + 1).toString();
         const newNode = {
             data: { id, label: id },
-            position: { x: 100 + Math.random() * 300, y: 100 + Math.random() * 300 }
+            position: { x: 400, y: 300 }
         };
-        setElements([...elements, newNode]);
+        setElements(prev => [...prev, newNode]);
+    };
+
+    const clearGraph = () => {
+        if (window.confirm('Are you sure you want to clear the entire graph?')) {
+            setElements([]);
+        }
     };
 
     useEffect(() => {
@@ -114,19 +120,25 @@ const GraphCanvas = ({ elements, setElements }) => {
             const nodeId = node.id();
 
             if (selectedNode && selectedNode !== nodeId) {
-                // Create edge
-                const weight = prompt('Enter edge weight:', '10') || '10';
-                const newEdge = {
-                    data: {
-                        id: `${selectedNode}-${nodeId}`,
-                        source: selectedNode,
-                        target: nodeId,
-                        weight
-                    }
-                };
-                setElements(prev => [...prev, newEdge]);
+                // Check if edge already exists
+                const edgeId = `${selectedNode}-${nodeId}`;
+                const inverseEdgeId = `${nodeId}-${selectedNode}`;
+                const exists = elements.some(e => e.data.id === edgeId || e.data.id === inverseEdgeId);
+
+                if (!exists) {
+                    const weight = prompt('Enter edge weight:', '1') || '1';
+                    const newEdge = {
+                        data: {
+                            id: edgeId,
+                            source: selectedNode,
+                            target: nodeId,
+                            weight
+                        }
+                    };
+                    setElements(prev => [...prev, newEdge]);
+                }
                 setSelectedNode(null);
-                cyRef.current.$(`#${selectedNode}`).unselect();
+                cyRef.current.nodes().unselect();
             } else {
                 setSelectedNode(nodeId);
             }
@@ -137,7 +149,21 @@ const GraphCanvas = ({ elements, setElements }) => {
                 setSelectedNode(null);
             }
         });
-    }, [elements, selectedNode]);
+
+        // Add delete functionality
+        const handleKeyDown = (e) => {
+            if (e.key === 'Delete' || e.key === 'Backspace') {
+                const selected = cyRef.current.$(':selected');
+                if (selected.length > 0) {
+                    const idsToRemove = selected.map(el => el.id());
+                    setElements(prev => prev.filter(el => !idsToRemove.includes(el.data.id)));
+                }
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [elements, selectedNode, setElements]);
 
     return (
         <div className="glass-card" style={{ height: '600px', position: 'relative', overflow: 'hidden', background: 'white' }}>
@@ -154,8 +180,17 @@ const GraphCanvas = ({ elements, setElements }) => {
                     alignItems: 'center',
                     gap: '8px'
                 }}>
-                    <div style={{ width: '8px', height: '8px', background: 'var(--secondary)', borderRadius: '50%' }}></div>
-                    Interactive Graph
+                    <div style={{ width: '8px', height: '8px', background: '#10b981', borderRadius: '50%' }}></div>
+                    Interactive Editor
+                </div>
+
+                <div style={{ display: 'flex', gap: '8px' }}>
+                    <button onClick={addNode} className="btn-secondary" style={{ padding: '8px 16px', height: 'auto', background: 'white' }}>
+                        <Plus size={16} /> Add Node
+                    </button>
+                    <button onClick={clearGraph} className="btn-secondary" style={{ padding: '8px 16px', height: 'auto', background: 'white', color: '#ef4444' }}>
+                        <Trash2 size={16} /> Clear Graph
+                    </button>
                 </div>
             </div>
 
@@ -169,7 +204,9 @@ const GraphCanvas = ({ elements, setElements }) => {
             />
 
             <div style={{ position: 'absolute', bottom: '20px', right: '20px', zIndex: 10 }}>
-                <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Graph view generated from image analysis.</p>
+                <p style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                    <b>How to build:</b> 1. Click 'Add Node' 2. Select a node, then click another to link them 3. Press Delete to remove selected.
+                </p>
             </div>
         </div>
     );
