@@ -49,15 +49,18 @@ const GraphCanvas = ({ elements, setElements }) => {
                 'target-arrow-shape': 'triangle',
                 'curve-style': 'bezier',
                 'label': 'data(weight)',
-                'font-size': '13px',
-                'font-weight': '600',
-                'color': 'var(--text-muted)',
+                'font-size': '16px',
+                'font-weight': '800',
+                'color': '#0f172a',
+                'text-rotation': 'autorotate',
                 'text-margin-y': -15,
                 'text-background-opacity': 1,
-                'text-background-color': '#fff',
-                'text-background-padding': '4px',
+                'text-background-color': '#ffffff',
+                'text-background-padding': '6px',
                 'text-background-shape': 'roundrectangle',
-                'edge-text-rotation': 'autorotate'
+                'text-border-color': '#e2e8f0',
+                'text-border-width': 1,
+                'text-border-opacity': 1
             }
         },
         {
