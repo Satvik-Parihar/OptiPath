@@ -7,7 +7,11 @@ import AlgorithmTheory from './components/AlgorithmTheory';
 import ComparisonPanel from './components/ComparisonPanel';
 import ImageUploader from './components/ImageUploader';
 
-const API_BASE = 'http://localhost:5000/api/algo';
+// Dynamically set API base URL based on environment
+const API_BASE = import.meta.env.VITE_API_URL ||
+  (window.location.hostname === 'localhost'
+    ? 'http://localhost:5000/api/algo'
+    : '/api/algo');
 
 function App() {
   const [elements, setElements] = useState([]);
