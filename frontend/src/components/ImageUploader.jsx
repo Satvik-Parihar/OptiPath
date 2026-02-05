@@ -31,7 +31,8 @@ const ImageUploader = ({ onUploadSuccess }) => {
 
         setTimeout(() => {
             const templates = [
-                // 1.jpeg: G1 (Undirected)
+
+                /* ================= 1.jpeg : G1 (Undirected) ================= */
                 [
                     { data: { id: 'A', label: 'A' }, position: { x: 50, y: 300 } },
                     { data: { id: 'B', label: 'B' }, position: { x: 250, y: 150 } },
@@ -52,7 +53,9 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'D-F', source: 'D', target: 'F', weight: '2' }, classes: 'undirected' },
                     { data: { id: 'E-F', source: 'E', target: 'F', weight: '5' }, classes: 'undirected' }
                 ],
-                // 2.jpeg: G4 (Undirected)
+
+
+                /* ================= 2.jpeg : G4 (Undirected) ================= */
                 [
                     { data: { id: 'A', label: 'A' }, position: { x: 50, y: 300 } },
                     { data: { id: 'B', label: 'B' }, position: { x: 200, y: 100 } },
@@ -77,7 +80,9 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'G-Y', source: 'G', target: 'Y', weight: '1' }, classes: 'undirected' },
                     { data: { id: 'X-Y', source: 'X', target: 'Y', weight: '5' }, classes: 'undirected' }
                 ],
-                // 3.jpeg: G5 (Directed)
+
+
+                /* ================= 3.jpeg : G5 (Directed) ================= */
                 [
                     { data: { id: '1', label: '1' }, position: { x: 200, y: 200 } },
                     { data: { id: '2', label: '2' }, position: { x: 400, y: 200 } },
@@ -91,7 +96,9 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: '3-2', source: '3', target: '2', weight: '6' } },
                     { data: { id: '4-3', source: '4', target: '3', weight: '2' } }
                 ],
-                // 4.jpeg: G2 (Directed)
+
+
+                /* ================= 4.jpeg : G2 (Directed) ================= */
                 [
                     { data: { id: 'A', label: 'A' }, position: { x: 300, y: 100 } },
                     { data: { id: 'B', label: 'B' }, position: { x: 500, y: 100 } },
@@ -110,7 +117,9 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'D-E', source: 'D', target: 'E', weight: '3' } },
                     { data: { id: 'E-D', source: 'E', target: 'D', weight: '5' } }
                 ],
-                // 5.jpeg: G3 (Directed)
+
+
+                /* ================= 5.jpeg : G3 (Directed) ================= */
                 [
                     { data: { id: 'A', label: 'A' }, position: { x: 300, y: 100 } },
                     { data: { id: 'B', label: 'B' }, position: { x: 500, y: 100 } },
@@ -129,7 +138,9 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'D-C', source: 'D', target: 'C', weight: '1' } },
                     { data: { id: 'E-D', source: 'E', target: 'D', weight: '4' } }
                 ],
-                // 6.jpeg: G6 (Undirected)
+
+
+                /* ================= 6.jpeg : G6 (Undirected) ================= */
                 [
                     { data: { id: 'A', label: 'A' }, position: { x: 100, y: 200 } },
                     { data: { id: 'B', label: 'B' }, position: { x: 350, y: 150 } },
@@ -146,92 +157,9 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'C-E', source: 'C', target: 'E', weight: '3' }, classes: 'undirected' },
                     { data: { id: 'D-F', source: 'D', target: 'F', weight: '14' }, classes: 'undirected' },
                     { data: { id: 'E-F', source: 'E', target: 'F', weight: '7' }, classes: 'undirected' }
-                ],
-                // 7.jpeg: G7 (Undirected)
-                [
-                    { data: { id: 'A', label: 'A' }, position: { x: 100, y: 300 } },
-                    { data: { id: 'B', label: 'B' }, position: { x: 250, y: 100 } },
-                    { data: { id: 'C', label: 'C' }, position: { x: 250, y: 500 } },
-                    { data: { id: 'D', label: 'D' }, position: { x: 450, y: 100 } },
-                    { data: { id: 'E', label: 'E' }, position: { x: 450, y: 500 } },
-                    { data: { id: 'F', label: 'F' }, position: { x: 600, y: 300 } },
-
-                    { data: { id: 'A-B', source: 'A', target: 'B', weight: '4' }, classes: 'undirected' },
-                    { data: { id: 'A-C', source: 'A', target: 'C', weight: '2' }, classes: 'undirected' },
-                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' }, classes: 'undirected' },
-                    { data: { id: 'B-D', source: 'B', target: 'D', weight: '5' }, classes: 'undirected' },
-                    { data: { id: 'C-D', source: 'C', target: 'D', weight: '10' }, classes: 'undirected' },
-                    { data: { id: 'C-E', source: 'C', target: 'E', weight: '8' }, classes: 'undirected' },
-                    { data: { id: 'D-E', source: 'D', target: 'E', weight: '2' }, classes: 'undirected' },
-                    { data: { id: 'D-F', source: 'D', target: 'F', weight: '6' }, classes: 'undirected' },
-                    { data: { id: 'E-F', source: 'E', target: 'F', weight: '3' }, classes: 'undirected' }
-                ],
-                // 8.jpeg: G8 (Directed)
-                [
-                    { data: { id: '1', label: '1' }, position: { x: 100, y: 200 } },
-                    { data: { id: '2', label: '2' }, position: { x: 350, y: 150 } },
-                    { data: { id: '3', label: '3' }, position: { x: 150, y: 450 } },
-                    { data: { id: '4', label: '4' }, position: { x: 450, y: 450 } },
-                    { data: { id: '5', label: '5' }, position: { x: 650, y: 300 } },
-
-                    { data: { id: '1-3', source: '1', target: '3', weight: '6' } },
-                    { data: { id: '1-4', source: '1', target: '4', weight: '3' } },
-                    { data: { id: '2-1', source: '2', target: '1', weight: '3' } },
-                    { data: { id: '3-4', source: '3', target: '4', weight: '2' } },
-                    { data: { id: '4-2', source: '4', target: '2', weight: '1' } },
-                    { data: { id: '4-3', source: '4', target: '3', weight: '2' } },
-                    { data: { id: '5-2', source: '5', target: '2', weight: '4' } },
-                    { data: { id: '5-4', source: '5', target: '4', weight: '2' } }
-                ],
-                // 9.jpeg: G10 (Undirected)
-                [
-                    { data: { id: 'O', label: 'O' }, position: { x: 50, y: 300 } },
-                    { data: { id: 'A', label: 'A' }, position: { x: 200, y: 100 } },
-                    { data: { id: 'B', label: 'B' }, position: { x: 300, y: 300 } },
-                    { data: { id: 'C', label: 'C' }, position: { x: 200, y: 500 } },
-                    { data: { id: 'D', label: 'D' }, position: { x: 500, y: 300 } },
-                    { data: { id: 'E', label: 'E' }, position: { x: 450, y: 500 } },
-                    { data: { id: 'F', label: 'F' }, position: { x: 600, y: 100 } },
-                    { data: { id: 'T', label: 'T' }, position: { x: 750, y: 300 } },
-
-                    { data: { id: 'O-A', source: 'O', target: 'A', weight: '2' }, classes: 'undirected' },
-                    { data: { id: 'O-B', source: 'O', target: 'B', weight: '5' }, classes: 'undirected' },
-                    { data: { id: 'O-C', source: 'O', target: 'C', weight: '4' }, classes: 'undirected' },
-                    { data: { id: 'A-B', source: 'A', target: 'B', weight: '2' }, classes: 'undirected' },
-                    { data: { id: 'A-D', source: 'A', target: 'D', weight: '7' }, classes: 'undirected' },
-                    { data: { id: 'A-F', source: 'A', target: 'F', weight: '12' }, classes: 'undirected' },
-                    { data: { id: 'B-D', source: 'B', target: 'D', weight: '4' }, classes: 'undirected' },
-                    { data: { id: 'B-E', source: 'B', target: 'E', weight: '3' }, classes: 'undirected' },
-                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' }, classes: 'undirected' },
-                    { data: { id: 'C-E', source: 'C', target: 'E', weight: '4' }, classes: 'undirected' },
-                    { data: { id: 'D-E', source: 'D', target: 'E', weight: '4' }, classes: 'undirected' },
-                    { data: { id: 'D-T', source: 'D', target: 'T', weight: '5' }, classes: 'undirected' },
-                    { data: { id: 'E-T', source: 'E', target: 'T', weight: '7' }, classes: 'undirected' },
-                    { data: { id: 'F-T', source: 'F', target: 'T', weight: '3' }, classes: 'undirected' }
-                ],
-                // 10.jpeg: G9 (Directed)
-                [
-                    { data: { id: '0', label: '0' }, position: { x: 100, y: 200 } },
-                    { data: { id: '1', label: '1' }, position: { x: 250, y: 200 } },
-                    { data: { id: '2', label: '2' }, position: { x: 400, y: 200 } },
-                    { data: { id: '3', label: '3' }, position: { x: 550, y: 200 } },
-                    { data: { id: '4', label: '4' }, position: { x: 100, y: 400 } },
-                    { data: { id: '5', label: '5' }, position: { x: 250, y: 400 } },
-                    { data: { id: '6', label: '6' }, position: { x: 400, y: 400 } },
-                    { data: { id: '7', label: '7' }, position: { x: 550, y: 400 } },
-
-                    { data: { id: '0-1', source: '0', target: '1', weight: '2' } },
-                    { data: { id: '0-2', source: '0', target: '2', weight: '2' } },
-                    { data: { id: '1-2', source: '1', target: '2', weight: '1' } },
-                    { data: { id: '2-4', source: '2', target: '4', weight: '2' } },
-                    { data: { id: '2-5', source: '2', target: '5', weight: '8' } },
-                    { data: { id: '3-1', source: '3', target: '1', weight: '4' } },
-                    { data: { id: '3-7', source: '3', target: '7', weight: '9' } },
-                    { data: { id: '4-6', source: '4', target: '6', weight: '5' } },
-                    { data: { id: '5-3', source: '5', target: '3', weight: '9' } },
-                    { data: { id: '6-2', source: '6', target: '2', weight: '9' } }
                 ]
             ];
+
 
 
             const nameMatch = file.name.match(/(\d+)/);
