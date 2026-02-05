@@ -8,91 +8,76 @@ const GraphCanvas = ({ elements, setElements }) => {
 
     const layout = {
         name: 'preset',
+        animate: true,
+        animationDuration: 500
     };
 
     const style = [
         {
             selector: 'node',
             style: {
-                'background-color': '#ffffff',
                 'label': 'data(label)',
-                'color': '#1c1917',
-                'text-valign': 'center',
-                'text-halign': 'center',
-                'width': '60px',
-                'height': '60px',
-                'font-family': 'Plus Jakarta Sans',
+                'background-color': '#fff',
+                'border-width': '3px',
+                'border-color': 'var(--secondary)',
+                'color': 'var(--text-main)',
                 'font-size': '16px',
                 'font-weight': '700',
-                'border-width': '3px',
-                'border-color': '#c2410c', // Primary Terracotta
-                'box-shadow': '0 4px 12px rgba(0,0,0,0.1)',
+                'text-valign': 'center',
+                'text-halign': 'center',
+                'width': '55px',
+                'height': '55px',
                 'transition-property': 'background-color, border-color, width, height',
-                'transition-duration': '0.3s'
+                'transition-duration': '0.3s',
+                'box-shadow': '0 4px 12px rgba(0,0,0,0.1)'
             }
         },
         {
             selector: 'node:selected',
             style: {
-                'background-color': '#ffedt1', // Light orange
-                'border-color': '#9a3412',
+                'border-color': 'var(--primary)',
                 'border-width': '4px',
-                'width': '65px',
-                'height': '65px',
-                'shadow-blur': 10
+                'background-color': '#fff7ed'
             }
         },
         {
             selector: 'edge',
             style: {
                 'width': 3,
-                'line-color': '#d6d3d1', // Stone 300
-                'target-arrow-color': '#d6d3d1',
+                'line-color': '#cbd5e1',
+                'target-arrow-color': '#cbd5e1',
                 'target-arrow-shape': 'triangle',
                 'curve-style': 'bezier',
                 'label': 'data(weight)',
-                'color': '#44403c', // Warm dark gray
-                'font-size': '14px',
+                'font-size': '13px',
                 'font-weight': '600',
-                'text-margin-y': -12,
-                'edge-text-rotation': 'autorotate',
+                'color': 'var(--text-muted)',
+                'text-margin-y': -15,
                 'text-background-opacity': 1,
-                'text-background-color': '#fcf9f2', // Match main bg
+                'text-background-color': '#fff',
                 'text-background-padding': '4px',
                 'text-background-shape': 'roundrectangle',
-                'text-border-width': 1,
-                'text-border-color': '#e7e5e4',
-                'text-border-opacity': 1
+                'edge-text-rotation': 'autorotate'
             }
         },
         {
-            selector: '.node-active',
+            selector: '.shortest-path-node',
             style: {
-                'background-color': '#c2410c', // Primary
-                'color': '#ffffff',
-                'border-color': '#9a3412',
-                'border-width': '4px',
-                'width': '70px',
-                'height': '70px',
-                'shadow-blur': 20,
-                'shadow-color': '#c2410c'
+                'background-color': 'var(--primary)',
+                'border-color': 'var(--primary)',
+                'color': '#fff',
+                'width': '65px',
+                'height': '65px',
+                'z-index': 10
             }
         },
         {
-            selector: '.path-highlight',
+            selector: '.shortest-path-edge',
             style: {
-                'line-color': '#0f766e', // Teal
-                'target-arrow-color': '#0f766e',
-                'width': 5,
-                'z-index': 100
-            }
-        },
-        {
-            selector: '.node-visited',
-            style: {
-                'background-color': '#d1fae5', // Light green/teal
-                'border-color': '#0f766e',
-                'color': '#0f766e'
+                'line-color': 'var(--primary)',
+                'width': 6,
+                'target-arrow-color': 'var(--primary)',
+                'z-index': 10
             }
         }
     ];
