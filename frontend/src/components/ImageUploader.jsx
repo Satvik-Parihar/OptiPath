@@ -39,10 +39,9 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'D', label: 'D' }, position: { x: 450, y: 150 } },
                     { data: { id: 'E', label: 'E' }, position: { x: 450, y: 450 } },
                     { data: { id: 'F', label: 'F' }, position: { x: 650, y: 300 } },
-                    // Edges from G1
+
                     { data: { id: 'A-B', source: 'A', target: 'B', weight: '3' }, classes: 'undirected' },
                     { data: { id: 'A-C', source: 'A', target: 'C', weight: '5' }, classes: 'undirected' },
-                    { data: { id: 'A-D', source: 'A', target: 'D', weight: '9' }, classes: 'undirected' },
                     { data: { id: 'B-C', source: 'B', target: 'C', weight: '3' }, classes: 'undirected' },
                     { data: { id: 'B-D', source: 'B', target: 'D', weight: '4' }, classes: 'undirected' },
                     { data: { id: 'B-E', source: 'B', target: 'E', weight: '7' }, classes: 'undirected' },
@@ -63,7 +62,7 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'H', label: 'H' }, position: { x: 750, y: 250 } },
                     { data: { id: 'X', label: 'X' }, position: { x: 200, y: 500 } },
                     { data: { id: 'Y', label: 'Y' }, position: { x: 500, y: 500 } },
-                    // Edges
+
                     { data: { id: 'A-B', source: 'A', target: 'B', weight: '8' }, classes: 'undirected' },
                     { data: { id: 'A-D', source: 'A', target: 'D', weight: '5' }, classes: 'undirected' },
                     { data: { id: 'A-X', source: 'A', target: 'X', weight: '2' }, classes: 'undirected' },
@@ -84,6 +83,7 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: '2', label: '2' }, position: { x: 400, y: 200 } },
                     { data: { id: '3', label: '3' }, position: { x: 400, y: 400 } },
                     { data: { id: '4', label: '4' }, position: { x: 200, y: 400 } },
+
                     { data: { id: '1-4', source: '1', target: '4', weight: '5' } },
                     { data: { id: '1-2', source: '1', target: '2', weight: '3' } },
                     { data: { id: '2-1', source: '2', target: '1', weight: '2' } },
@@ -98,12 +98,12 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'C', label: 'C' }, position: { x: 100, y: 350 } },
                     { data: { id: 'D', label: 'D' }, position: { x: 300, y: 550 } },
                     { data: { id: 'E', label: 'E' }, position: { x: 600, y: 350 } },
-                    // Edges
+
                     { data: { id: 'A-B', source: 'A', target: 'B', weight: '5' } },
                     { data: { id: 'A-D', source: 'A', target: 'D', weight: '6' } },
                     { data: { id: 'A-E', source: 'A', target: 'E', weight: '2' } },
+                    { data: { id: 'A-C', source: 'A', target: 'C', weight: '1' } },
                     { data: { id: 'B-E', source: 'B', target: 'E', weight: '7' } },
-                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' } }, // Loop
                     { data: { id: 'C-A', source: 'C', target: 'A', weight: '3' } },
                     { data: { id: 'C-D', source: 'C', target: 'D', weight: '4' } },
                     { data: { id: 'D-C', source: 'D', target: 'C', weight: '2' } },
@@ -117,12 +117,12 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'C', label: 'C' }, position: { x: 100, y: 350 } },
                     { data: { id: 'D', label: 'D' }, position: { x: 300, y: 550 } },
                     { data: { id: 'E', label: 'E' }, position: { x: 600, y: 350 } },
-                    // Edges
+
                     { data: { id: 'A-B', source: 'A', target: 'B', weight: '4' } },
                     { data: { id: 'A-D', source: 'A', target: 'D', weight: '5' } },
                     { data: { id: 'A-E', source: 'A', target: 'E', weight: '1' } },
+                    { data: { id: 'A-C', source: 'A', target: 'C', weight: '1' } },
                     { data: { id: 'B-E', source: 'B', target: 'E', weight: '6' } },
-                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' } }, // Loop
                     { data: { id: 'C-A', source: 'C', target: 'A', weight: '2' } },
                     { data: { id: 'C-D', source: 'C', target: 'D', weight: '3' } },
                     { data: { id: 'D-E', source: 'D', target: 'E', weight: '2' } },
@@ -137,9 +137,9 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'D', label: 'D' }, position: { x: 250, y: 550 } },
                     { data: { id: 'E', label: 'E' }, position: { x: 550, y: 250 } },
                     { data: { id: 'F', label: 'F' }, position: { x: 700, y: 500 } },
-                    // Edges
+
                     { data: { id: 'A-B', source: 'A', target: 'B', weight: '5' }, classes: 'undirected' },
-                    { data: { id: 'A-C', source: 'A', target: 'C', weight: '9' }, classes: 'undirected' },
+                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '9' }, classes: 'undirected' },
                     { data: { id: 'A-D', source: 'A', target: 'D', weight: '11' }, classes: 'undirected' },
                     { data: { id: 'B-E', source: 'B', target: 'E', weight: '3' }, classes: 'undirected' },
                     { data: { id: 'C-D', source: 'C', target: 'D', weight: '4' }, classes: 'undirected' },
@@ -155,7 +155,7 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'D', label: 'D' }, position: { x: 450, y: 100 } },
                     { data: { id: 'E', label: 'E' }, position: { x: 450, y: 500 } },
                     { data: { id: 'F', label: 'F' }, position: { x: 600, y: 300 } },
-                    // Edges
+
                     { data: { id: 'A-B', source: 'A', target: 'B', weight: '4' }, classes: 'undirected' },
                     { data: { id: 'A-C', source: 'A', target: 'C', weight: '2' }, classes: 'undirected' },
                     { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' }, classes: 'undirected' },
@@ -173,7 +173,7 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: '3', label: '3' }, position: { x: 150, y: 450 } },
                     { data: { id: '4', label: '4' }, position: { x: 450, y: 450 } },
                     { data: { id: '5', label: '5' }, position: { x: 650, y: 300 } },
-                    // Edges
+
                     { data: { id: '1-3', source: '1', target: '3', weight: '6' } },
                     { data: { id: '1-4', source: '1', target: '4', weight: '3' } },
                     { data: { id: '2-1', source: '2', target: '1', weight: '3' } },
@@ -193,7 +193,7 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'E', label: 'E' }, position: { x: 450, y: 500 } },
                     { data: { id: 'F', label: 'F' }, position: { x: 600, y: 100 } },
                     { data: { id: 'T', label: 'T' }, position: { x: 750, y: 300 } },
-                    // Edges
+
                     { data: { id: 'O-A', source: 'O', target: 'A', weight: '2' }, classes: 'undirected' },
                     { data: { id: 'O-B', source: 'O', target: 'B', weight: '5' }, classes: 'undirected' },
                     { data: { id: 'O-C', source: 'O', target: 'C', weight: '4' }, classes: 'undirected' },
@@ -219,7 +219,7 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: '5', label: '5' }, position: { x: 250, y: 400 } },
                     { data: { id: '6', label: '6' }, position: { x: 400, y: 400 } },
                     { data: { id: '7', label: '7' }, position: { x: 550, y: 400 } },
-                    // Edges
+
                     { data: { id: '0-1', source: '0', target: '1', weight: '2' } },
                     { data: { id: '0-2', source: '0', target: '2', weight: '2' } },
                     { data: { id: '1-2', source: '1', target: '2', weight: '1' } },
