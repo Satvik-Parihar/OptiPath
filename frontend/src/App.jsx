@@ -36,10 +36,14 @@ function App() {
         weight: el.data.weight
       }));
 
+      // Check if graph is undirected (has edges with 'undirected' class)
+      const isUndirected = elements.some(el => el.classes && el.classes.includes('undirected'));
+
       const res = await axios.post(`${API_BASE}/${type === 'dijkstra' ? 'dijkstra' : 'floyd-warshall'}`, {
         nodes,
         edges,
-        startNode: type === 'dijkstra' ? startNode : undefined
+        startNode: type === 'dijkstra' ? startNode : undefined,
+        isDirected: !isUndirected
       });
 
       setSimulationData(res.data);

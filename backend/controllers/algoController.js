@@ -1,6 +1,6 @@
 // Dijkstra's Algorithm Simulation
 const solveDijkstra = (req, res) => {
-    const { nodes, edges, startNode } = req.body;
+    const { nodes, edges, startNode, isDirected } = req.body;
 
     if (!startNode || !nodes || !edges) {
         return res.status(400).json({ error: 'Incomplete graph data' });
@@ -11,8 +11,10 @@ const solveDijkstra = (req, res) => {
     nodes.forEach(node => adj[node.id] = []);
     edges.forEach(edge => {
         adj[edge.source].push({ to: edge.target, weight: Number(edge.weight) });
-        // Assuming undirected graph for visualizer, can be changed
-        adj[edge.target].push({ to: edge.source, weight: Number(edge.weight) });
+        // Only add reverse edge if graph is NOT directed
+        if (!isDirected) {
+            adj[edge.target].push({ to: edge.source, weight: Number(edge.weight) });
+        }
     });
 
     const distances = {};
@@ -64,7 +66,7 @@ const solveDijkstra = (req, res) => {
 
 // Floyd-Warshall Algorithm Simulation
 const solveFloydWarshall = (req, res) => {
-    const { nodes, edges } = req.body;
+    const { nodes, edges, isDirected } = req.body;
     const n = nodes.length;
     const nodeIds = nodes.map(node => node.id);
     const dist = Array(n).fill().map(() => Array(n).fill(Infinity));
@@ -76,7 +78,9 @@ const solveFloydWarshall = (req, res) => {
         const u = nodeIds.indexOf(edge.source);
         const v = nodeIds.indexOf(edge.target);
         dist[u][v] = Number(edge.weight);
-        dist[v][u] = Number(edge.weight); // Undirected
+        if (!isDirected) {
+            dist[v][u] = Number(edge.weight); // Undirected
+        }
         next[u][v] = v;
         next[v][u] = u;
     });
