@@ -31,7 +31,6 @@ const ImageUploader = ({ onUploadSuccess }) => {
 
         setTimeout(() => {
             const templates = [
-
                 // 1.jpeg: G1 (Undirected)
                 [
                     { data: { id: 'A', label: 'A' }, position: { x: 50, y: 300 } },
@@ -54,34 +53,43 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'D-F', source: 'D', target: 'F', weight: '2' } },
                     { data: { id: 'E-F', source: 'E', target: 'F', weight: '5' } }
                 ],
-                // 2.jpeg: Large Star Layout (Unchanged)
+                // 2.jpeg: G4 (Undirected)
                 [
                     { data: { id: 'A', label: 'A' }, position: { x: 50, y: 300 } },
                     { data: { id: 'B', label: 'B' }, position: { x: 200, y: 100 } },
-                    { data: { id: 'C', label: 'C' }, position: { x: 200, y: 500 } },
                     { data: { id: 'D', label: 'D' }, position: { x: 350, y: 300 } },
-                    { data: { id: 'E', label: 'E' }, position: { x: 500, y: 500 } },
                     { data: { id: 'F', label: 'F' }, position: { x: 650, y: 100 } },
                     { data: { id: 'G', label: 'G' }, position: { x: 600, y: 400 } },
                     { data: { id: 'H', label: 'H' }, position: { x: 750, y: 250 } },
+                    { data: { id: 'X', label: 'X' }, position: { x: 200, y: 500 } },
+                    { data: { id: 'Y', label: 'Y' }, position: { x: 500, y: 500 } },
+                    // Edges
                     { data: { id: 'A-B', source: 'A', target: 'B', weight: '8' } },
                     { data: { id: 'A-D', source: 'A', target: 'D', weight: '5' } },
+                    { data: { id: 'A-X', source: 'A', target: 'X', weight: '2' } },
+                    { data: { id: 'B-D', source: 'B', target: 'D', weight: '2' } },
                     { data: { id: 'B-F', source: 'B', target: 'F', weight: '13' } },
                     { data: { id: 'D-F', source: 'D', target: 'F', weight: '6' } },
                     { data: { id: 'D-G', source: 'D', target: 'G', weight: '3' } },
-                    { data: { id: 'G-H', source: 'G', target: 'H', weight: '6' } }
+                    { data: { id: 'D-Y', source: 'D', target: 'Y', weight: '1' } },
+                    { data: { id: 'F-G', source: 'F', target: 'G', weight: '2' } },
+                    { data: { id: 'F-H', source: 'F', target: 'H', weight: '3' } },
+                    { data: { id: 'G-H', source: 'G', target: 'H', weight: '6' } },
+                    { data: { id: 'G-Y', source: 'G', target: 'Y', weight: '1' } },
+                    { data: { id: 'X-Y', source: 'X', target: 'Y', weight: '5' } }
                 ],
-                // 3.jpeg: Directed Cycle Square (Unchanged)
+                // 3.jpeg: G5 (Directed)
                 [
                     { data: { id: '1', label: '1' }, position: { x: 200, y: 200 } },
-                    { data: { id: '2', label: '2' }, position: { x: 200, y: 400 } },
+                    { data: { id: '2', label: '2' }, position: { x: 400, y: 200 } },
                     { data: { id: '3', label: '3' }, position: { x: 400, y: 400 } },
-                    { data: { id: '4', label: '4' }, position: { x: 400, y: 200 } },
+                    { data: { id: '4', label: '4' }, position: { x: 200, y: 400 } },
                     { data: { id: '1-4', source: '1', target: '4', weight: '5' } },
                     { data: { id: '1-2', source: '1', target: '2', weight: '3' } },
+                    { data: { id: '2-1', source: '2', target: '1', weight: '2' } },
                     { data: { id: '2-4', source: '2', target: '4', weight: '4' } },
-                    { data: { id: '4-3', source: '4', target: '3', weight: '2' } },
-                    { data: { id: '3-2', source: '3', target: '2', weight: '6' } }
+                    { data: { id: '3-2', source: '3', target: '2', weight: '6' } },
+                    { data: { id: '4-3', source: '4', target: '3', weight: '2' } }
                 ],
                 // 4.jpeg: G2 (Directed)
                 [
@@ -90,12 +98,12 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'C', label: 'C' }, position: { x: 100, y: 350 } },
                     { data: { id: 'D', label: 'D' }, position: { x: 300, y: 550 } },
                     { data: { id: 'E', label: 'E' }, position: { x: 600, y: 350 } },
-                    // Edges from G2
+                    // Edges
                     { data: { id: 'A-B', source: 'A', target: 'B', weight: '5' } },
                     { data: { id: 'A-D', source: 'A', target: 'D', weight: '6' } },
-                    { data: { id: 'A-E', source: 'A', target: 'E', weight: '2' } }, // New from G2 definition
+                    { data: { id: 'A-E', source: 'A', target: 'E', weight: '2' } },
                     { data: { id: 'B-E', source: 'B', target: 'E', weight: '7' } },
-                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' } }, // Loop/Arc
+                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' } }, // Loop
                     { data: { id: 'C-A', source: 'C', target: 'A', weight: '3' } },
                     { data: { id: 'C-D', source: 'C', target: 'D', weight: '4' } },
                     { data: { id: 'D-C', source: 'D', target: 'C', weight: '2' } },
@@ -109,19 +117,19 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'C', label: 'C' }, position: { x: 100, y: 350 } },
                     { data: { id: 'D', label: 'D' }, position: { x: 300, y: 550 } },
                     { data: { id: 'E', label: 'E' }, position: { x: 600, y: 350 } },
-                    // Edges from G3
+                    // Edges
                     { data: { id: 'A-B', source: 'A', target: 'B', weight: '4' } },
                     { data: { id: 'A-D', source: 'A', target: 'D', weight: '5' } },
                     { data: { id: 'A-E', source: 'A', target: 'E', weight: '1' } },
                     { data: { id: 'B-E', source: 'B', target: 'E', weight: '6' } },
-                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' } }, // Loop/Arc
+                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' } }, // Loop
                     { data: { id: 'C-A', source: 'C', target: 'A', weight: '2' } },
                     { data: { id: 'C-D', source: 'C', target: 'D', weight: '3' } },
                     { data: { id: 'D-E', source: 'D', target: 'E', weight: '2' } },
                     { data: { id: 'D-C', source: 'D', target: 'C', weight: '1' } },
                     { data: { id: 'E-D', source: 'E', target: 'D', weight: '4' } }
                 ],
-                // 5. 6.jpeg: Large Undirected
+                // 6.jpeg: G6 (Undirected)
                 [
                     { data: { id: 'A', label: 'A' }, position: { x: 100, y: 200 } },
                     { data: { id: 'B', label: 'B' }, position: { x: 350, y: 150 } },
@@ -129,46 +137,53 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'D', label: 'D' }, position: { x: 250, y: 550 } },
                     { data: { id: 'E', label: 'E' }, position: { x: 550, y: 250 } },
                     { data: { id: 'F', label: 'F' }, position: { x: 700, y: 500 } },
+                    // Edges
                     { data: { id: 'A-B', source: 'A', target: 'B', weight: '5' } },
-                    { data: { id: 'B-E', source: 'B', target: 'E', weight: '3' } },
-                    { data: { id: 'E-F', source: 'E', target: 'F', weight: '7' } },
-                    { data: { id: 'D-F', source: 'D', target: 'F', weight: '14' } },
                     { data: { id: 'A-C', source: 'A', target: 'C', weight: '9' } },
-                    { data: { id: 'C-E', source: 'C', target: 'E', weight: '3' } }
+                    { data: { id: 'A-D', source: 'A', target: 'D', weight: '11' } },
+                    { data: { id: 'B-E', source: 'B', target: 'E', weight: '3' } },
+                    { data: { id: 'C-D', source: 'C', target: 'D', weight: '4' } },
+                    { data: { id: 'C-E', source: 'C', target: 'E', weight: '3' } },
+                    { data: { id: 'D-F', source: 'D', target: 'F', weight: '14' } },
+                    { data: { id: 'E-F', source: 'E', target: 'F', weight: '7' } }
                 ],
-                // 6. 7.jpeg: Colored Hexagon Node Map (Corrected positions and edges)
+                // 7.jpeg: G7 (Undirected)
                 [
                     { data: { id: 'A', label: 'A' }, position: { x: 100, y: 300 } },
-                    { data: { id: 'B', label: 'B' }, position: { x: 200, y: 100 } },
-                    { data: { id: 'C', label: 'C' }, position: { x: 200, y: 500 } },
-                    { data: { id: 'D', label: 'D' }, position: { x: 400, y: 100 } },
-                    { data: { id: 'E', label: 'E' }, position: { x: 400, y: 500 } },
-                    { data: { id: 'F', label: 'F' }, position: { x: 550, y: 300 } },
+                    { data: { id: 'B', label: 'B' }, position: { x: 250, y: 100 } },
+                    { data: { id: 'C', label: 'C' }, position: { x: 250, y: 500 } },
+                    { data: { id: 'D', label: 'D' }, position: { x: 450, y: 100 } },
+                    { data: { id: 'E', label: 'E' }, position: { x: 450, y: 500 } },
+                    { data: { id: 'F', label: 'F' }, position: { x: 600, y: 300 } },
+                    // Edges
                     { data: { id: 'A-B', source: 'A', target: 'B', weight: '4' } },
                     { data: { id: 'A-C', source: 'A', target: 'C', weight: '2' } },
+                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' } },
                     { data: { id: 'B-D', source: 'B', target: 'D', weight: '5' } },
-                    { data: { id: 'C-D', source: 'C', target: 'D', weight: '8' } },
-                    { data: { id: 'C-E', source: 'C', target: 'E', weight: '10' } },
+                    { data: { id: 'C-D', source: 'C', target: 'D', weight: '10' } },
+                    { data: { id: 'C-E', source: 'C', target: 'E', weight: '8' } },
                     { data: { id: 'D-E', source: 'D', target: 'E', weight: '2' } },
                     { data: { id: 'D-F', source: 'D', target: 'F', weight: '6' } },
-                    { data: { id: 'E-F', source: 'E', target: 'F', weight: '3' } },
-                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' } }
+                    { data: { id: 'E-F', source: 'E', target: 'F', weight: '3' } }
                 ],
-                // 7. 8.jpeg: Small 5-Node Directed
+                // 8.jpeg: G8 (Directed)
                 [
                     { data: { id: '1', label: '1' }, position: { x: 100, y: 200 } },
                     { data: { id: '2', label: '2' }, position: { x: 350, y: 150 } },
                     { data: { id: '3', label: '3' }, position: { x: 150, y: 450 } },
                     { data: { id: '4', label: '4' }, position: { x: 450, y: 450 } },
                     { data: { id: '5', label: '5' }, position: { x: 650, y: 300 } },
-                    { data: { id: '5-2', source: '5', target: '2', weight: '4' } },
-                    { data: { id: '2-1', source: '2', target: '1', weight: '3' } },
-                    { data: { id: '5-4', source: '5', target: '4', weight: '2' } },
+                    // Edges
                     { data: { id: '1-3', source: '1', target: '3', weight: '6' } },
                     { data: { id: '1-4', source: '1', target: '4', weight: '3' } },
-                    { data: { id: '4-2', source: '4', target: '2', weight: '1' } }
+                    { data: { id: '2-1', source: '2', target: '1', weight: '3' } },
+                    { data: { id: '3-4', source: '3', target: '4', weight: '2' } },
+                    { data: { id: '4-2', source: '4', target: '2', weight: '1' } },
+                    { data: { id: '4-3', source: '4', target: '3', weight: '2' } },
+                    { data: { id: '5-2', source: '5', target: '2', weight: '4' } },
+                    { data: { id: '5-4', source: '5', target: '4', weight: '2' } }
                 ],
-                // 8. 9.jpeg: Start/End Network Map (Corrected based on visual evidence)
+                // 9.jpeg: G10 (Undirected)
                 [
                     { data: { id: 'O', label: 'O' }, position: { x: 50, y: 300 } },
                     { data: { id: 'A', label: 'A' }, position: { x: 200, y: 100 } },
@@ -178,31 +193,43 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'E', label: 'E' }, position: { x: 450, y: 500 } },
                     { data: { id: 'F', label: 'F' }, position: { x: 600, y: 100 } },
                     { data: { id: 'T', label: 'T' }, position: { x: 750, y: 300 } },
+                    // Edges
                     { data: { id: 'O-A', source: 'O', target: 'A', weight: '2' } },
-                    { data: { id: 'O-B', source: 'O', target: 'B', weight: '5' } }, // New edge
+                    { data: { id: 'O-B', source: 'O', target: 'B', weight: '5' } },
                     { data: { id: 'O-C', source: 'O', target: 'C', weight: '4' } },
-                    { data: { id: 'A-F', source: 'A', target: 'F', weight: '12' } },
+                    { data: { id: 'A-B', source: 'A', target: 'B', weight: '2' } },
                     { data: { id: 'A-D', source: 'A', target: 'D', weight: '7' } },
-                    { data: { id: 'B-D', source: 'B', target: 'D', weight: '4' } }, // New edge
-                    { data: { id: 'B-E', source: 'B', target: 'E', weight: '3' } }, // New edge
-                    { data: { id: 'C-B', source: 'C', target: 'B', weight: '1' } }, // New edge
-                    { data: { id: 'C-E', source: 'C', target: 'E', weight: '4' } }, // New edge
-                    { data: { id: 'D-E', source: 'D', target: 'E', weight: '1' } }, // New edge
+                    { data: { id: 'A-F', source: 'A', target: 'F', weight: '12' } },
+                    { data: { id: 'B-D', source: 'B', target: 'D', weight: '4' } },
+                    { data: { id: 'B-E', source: 'B', target: 'E', weight: '3' } },
+                    { data: { id: 'B-C', source: 'B', target: 'C', weight: '1' } },
+                    { data: { id: 'C-E', source: 'C', target: 'E', weight: '4' } },
+                    { data: { id: 'D-E', source: 'D', target: 'E', weight: '4' } },
                     { data: { id: 'D-T', source: 'D', target: 'T', weight: '5' } },
-                    { data: { id: 'F-T', source: 'F', target: 'T', weight: '3' } },
-                    { data: { id: 'E-T', source: 'E', target: 'T', weight: '7' } } // New edge
+                    { data: { id: 'E-T', source: 'E', target: 'T', weight: '7' } },
+                    { data: { id: 'F-T', source: 'F', target: 'T', weight: '3' } }
                 ],
-                // 9. 10.jpeg: Balanced Mesh Network
+                // 10.jpeg: G9 (Directed)
                 [
-                    { data: { id: '1', label: '1' }, position: { x: 400, y: 100 } },
-                    { data: { id: '2', label: '2' }, position: { x: 200, y: 300 } },
-                    { data: { id: '3', label: '3' }, position: { x: 600, y: 300 } },
-                    { data: { id: '4', label: '4' }, position: { x: 400, y: 500 } },
-                    { data: { id: '1-2', source: '1', target: '2', weight: '10' } },
-                    { data: { id: '1-3', source: '1', target: '3', weight: '15' } },
-                    { data: { id: '2-4', source: '2', target: '4', weight: '20' } },
-                    { data: { id: '3-4', source: '3', target: '4', weight: '25' } },
-                    { data: { id: '2-3', source: '2', target: '3', weight: '30' } }
+                    { data: { id: '0', label: '0' }, position: { x: 100, y: 200 } },
+                    { data: { id: '1', label: '1' }, position: { x: 250, y: 200 } },
+                    { data: { id: '2', label: '2' }, position: { x: 400, y: 200 } },
+                    { data: { id: '3', label: '3' }, position: { x: 550, y: 200 } },
+                    { data: { id: '4', label: '4' }, position: { x: 100, y: 400 } },
+                    { data: { id: '5', label: '5' }, position: { x: 250, y: 400 } },
+                    { data: { id: '6', label: '6' }, position: { x: 400, y: 400 } },
+                    { data: { id: '7', label: '7' }, position: { x: 550, y: 400 } },
+                    // Edges
+                    { data: { id: '0-1', source: '0', target: '1', weight: '2' } },
+                    { data: { id: '0-2', source: '0', target: '2', weight: '2' } },
+                    { data: { id: '1-2', source: '1', target: '2', weight: '1' } },
+                    { data: { id: '2-4', source: '2', target: '4', weight: '2' } },
+                    { data: { id: '2-5', source: '2', target: '5', weight: '8' } },
+                    { data: { id: '3-1', source: '3', target: '1', weight: '4' } },
+                    { data: { id: '3-7', source: '3', target: '7', weight: '9' } },
+                    { data: { id: '4-6', source: '4', target: '6', weight: '5' } },
+                    { data: { id: '5-3', source: '5', target: '3', weight: '9' } },
+                    { data: { id: '6-2', source: '6', target: '2', weight: '9' } }
                 ]
             ];
 
