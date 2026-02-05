@@ -111,12 +111,9 @@ const initGemini = () => {
         console.error('❌ GEMINI_API_KEY missing in .env');
         return null;
     }
-    console.log('🤖 Initializing Gemini with model: gemini-1.5-flash');
     const genAI = new GoogleGenerativeAI(apiKey);
-    return genAI.getGenerativeModel({
-        model: 'gemini-1.5-flash',
-        apiVersion: 'v1' // Explicitly use v1 instead of v1beta
-    });
+    // Simple initialization, gemini-1.5-flash is the standard model ID
+    return genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 };
 
 
@@ -142,10 +139,10 @@ const analyzeGraphImage = async (req, res) => {
                 ]
             }
             Rules:
-            1. Suggest reasonable x,y positions for nodes so they don't overlap (canvas is roughly 800x600).
+            1. Suggest reasonable x,y positions for nodes (canvas is 800x600).
             2. Weights must be strings.
-            3. Labels should match the text in the diagram.
-            4. Return ONLY the JSON object, no markdown formatting.
+            3. Labels should match the diagram.
+            4. Return ONLY the JSON object.
         `;
 
         const imagePart = {
@@ -166,7 +163,8 @@ const analyzeGraphImage = async (req, res) => {
         res.json(graphData);
     } catch (error) {
         console.error('AI Analysis Error:', error);
-        res.status(500).json({ error: 'Failed to analyze image: ' + error.message });
+        // Added [v2] to help confirm if the new code is deployed
+        res.status(500).json({ error: 'Failed to analyze image [v2]: ' + error.message });
     }
 };
 
