@@ -111,8 +111,12 @@ const initGemini = () => {
         console.error('❌ GEMINI_API_KEY missing in .env');
         return null;
     }
+    console.log('🤖 Initializing Gemini with model: gemini-1.5-flash');
     const genAI = new GoogleGenerativeAI(apiKey);
-    return genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    return genAI.getGenerativeModel({
+        model: 'gemini-1.5-flash',
+        apiVersion: 'v1' // Explicitly use v1 instead of v1beta
+    });
 };
 
 
