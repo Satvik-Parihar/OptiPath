@@ -24,33 +24,42 @@ const ImageUploader = ({ onUploadSuccess }) => {
         handleFile(droppedFile);
     };
 
-    const processImage = () => {
+    const processImage = async () => {
+        if (!file) return;
         setStatus('processing');
 
-        // Simulate image analysis delay
-        setTimeout(() => {
-            // Mock graph data based on "analysis"
-            const mockElements = [
-                { data: { id: 'A', label: 'A' }, position: { x: 100, y: 300 } },
-                { data: { id: 'B', label: 'B' }, position: { x: 250, y: 150 } },
-                { data: { id: 'C', label: 'C' }, position: { x: 250, y: 450 } },
-                { data: { id: 'D', label: 'D' }, position: { x: 450, y: 150 } },
-                { data: { id: 'E', label: 'E' }, position: { x: 450, y: 450 } },
-                { data: { id: 'F', label: 'F' }, position: { x: 600, y: 300 } },
-                { data: { id: 'A-B', source: 'A', target: 'B', weight: '4' } },
-                { data: { id: 'A-C', source: 'A', target: 'C', weight: '5' } },
-                { data: { id: 'B-C', source: 'B', target: 'C', weight: '11' } },
-                { data: { id: 'B-D', source: 'B', target: 'D', weight: '9' } },
-                { data: { id: 'B-E', source: 'B', target: 'E', weight: '7' } },
-                { data: { id: 'C-E', source: 'C', target: 'E', weight: '3' } },
-                { data: { id: 'D-E', source: 'D', target: 'E', weight: '13' } },
-                { data: { id: 'D-F', source: 'D', target: 'F', weight: '2' } },
-                { data: { id: 'E-F', source: 'E', target: 'F', weight: '6' } }
-            ];
+        try {
+            const formData = new FormData();
+            formData.append('image', file);
 
-            setStatus('success');
-            onUploadSuccess(mockElements);
-        }, 2000);
+            // Determine API URL (same logic as App.jsx)
+            const API_BASE = (window.location.hostname === 'localhost'
+                ? 'http://localhost:5000/api/algo'
+                : '/api/algo');
+
+            const response = await fetch(`${API_BASE}/analyze-image`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to analyze image');
+            }
+
+            const data = await response.json();
+
+            if (data.elements && Array.isArray(data.elements)) {
+                setStatus('success');
+                onUploadSuccess(data.elements);
+            } else {
+                throw new Error('Invalid response format from AI');
+            }
+        } catch (error) {
+            console.error('Upload error:', error);
+            alert(error.message);
+            setStatus('error');
+        }
     };
 
     const removeFile = () => {
