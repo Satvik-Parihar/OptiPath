@@ -80,6 +80,8 @@ function App() {
       const step = simulationData.steps[currentStep];
       const visitedNodes = step.visited;
       const currentNode = step.currentNode;
+      const currentPrevious = step.previous || {}; // Use step-specific previous map
+      const exploringEdges = step.exploring || [];
 
       const newElements = elements.map(el => {
         if (!el.data.source) {
@@ -89,15 +91,28 @@ function App() {
           else if (visitedNodes.includes(el.data.id)) className = 'node-visited';
           return { ...el, classes: className };
         } else {
-          // Edge styling (highlight if part of the shortest path tree so far)
+          // Edge styling
           const target = el.data.target;
           const source = el.data.source;
-          const isPath = simulationData.previous[target] === source || simulationData.previous[source] === target;
-          return { ...el, classes: isPath && visitedNodes.includes(target) ? 'path-highlight' : '' };
+
+          // Check if edge is currently being explored
+          const isExploring = exploringEdges.some(
+            e => (e.from === source && e.to === target) || (e.from === target && e.to === source)
+          );
+
+          // Check if edge is part of the current shortest path tree
+          const isPath = currentPrevious[target] === source || currentPrevious[source] === target;
+
+          let className = '';
+          if (isPath) className = 'shortest-path-edge';
+          else if (isExploring) className = 'edge-exploring';
+
+          return { ...el, classes: className };
         }
       });
       setElements(newElements);
     } else if (algo === 'floyd') {
+      // ... existing floyd logic ...
       const step = simulationData.steps[currentStep];
       const k = step.k;
       const newElements = elements.map(el => {
@@ -260,13 +275,14 @@ function App() {
                           </div>
 
                           <div>
-                            <span style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'block', marginBottom: '12px', fontWeight: '600' }}>DISTANCE TABLE (FROM {startNode})</span>
+                            <span style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'block', marginBottom: '12px', fontWeight: '600' }}>DISTANCE TABLE (STEP {currentStep + 1})</span>
                             <div style={{ maxHeight: '300px', overflowY: 'auto', borderRadius: '16px', border: '1px solid var(--border)' }}>
                               <table style={{ width: '100%', fontSize: '14px', borderCollapse: 'collapse' }}>
                                 <thead style={{ background: 'var(--bg-subtle)', position: 'sticky', top: 0 }}>
                                   <tr>
                                     <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid var(--border)', fontWeight: '600', color: 'var(--text-muted)' }}>Node</th>
-                                    <th style={{ padding: '12px', textAlign: 'right', borderBottom: '1px solid var(--border)', fontWeight: '600', color: 'var(--text-muted)' }}>Distance</th>
+                                    <th style={{ padding: '12px', textAlign: 'right', borderBottom: '1px solid var(--border)', fontWeight: '600', color: 'var(--text-muted)' }}>Dist</th>
+                                    <th style={{ padding: '12px', textAlign: 'right', borderBottom: '1px solid var(--border)', fontWeight: '600', color: 'var(--text-muted)' }}>Prev</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -280,6 +296,9 @@ function App() {
                                       </td>
                                       <td style={{ padding: '12px', textAlign: 'right', borderBottom: '1px solid var(--border)', fontWeight: '600', color: d === null || d === Infinity ? 'var(--text-light)' : 'var(--text-main)' }}>
                                         {d === null || d === Infinity ? '∞' : d}
+                                      </td>
+                                      <td style={{ padding: '12px', textAlign: 'right', borderBottom: '1px solid var(--border)', color: 'var(--text-muted)' }}>
+                                        {simulationData.steps[currentStep].previous && simulationData.steps[currentStep].previous[id] ? simulationData.steps[currentStep].previous[id] : '-'}
                                       </td>
                                     </tr>
                                   ))}

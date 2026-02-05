@@ -79,6 +79,16 @@ const GraphCanvas = ({ elements, setElements }) => {
                 'target-arrow-color': 'var(--primary)',
                 'z-index': 10
             }
+        },
+        {
+            selector: '.edge-exploring',
+            style: {
+                'line-color': '#f59e0b', // Amber 500
+                'target-arrow-color': '#f59e0b',
+                'width': 4,
+                'z-index': 9,
+                'line-style': 'dashed'
+            }
         }
     ];
 

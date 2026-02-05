@@ -34,10 +34,11 @@ const solveDijkstra = (req, res) => {
         if (visited.has(u)) continue;
         visited.add(u);
 
-        // Save step
+        // Save step with snapshot of distances and previous pointers
         steps.push({
             currentNode: u,
             distances: { ...distances },
+            previous: { ...previous },
             visited: Array.from(visited),
             exploring: []
         });
