@@ -24,7 +24,6 @@ const ImageUploader = ({ onUploadSuccess }) => {
         handleFile(droppedFile);
     };
 
-    const [uploadCount, setUploadCount] = useState(0);
 
     const processImage = async () => {
         if (!file) return;
@@ -194,8 +193,22 @@ const ImageUploader = ({ onUploadSuccess }) => {
             ];
 
 
-            const selectedElements = templates[uploadCount % 10];
-            setUploadCount(prev => prev + 1);
+            const nameMatch = file.name.match(/(\d+)/);
+            let index = 0;
+            if (nameMatch) {
+                const number = parseInt(nameMatch[0], 10);
+                if (number >= 1 && number <= 10) {
+                    index = number - 1;
+                }
+            }
+
+            const selectedElements = templates[index];
+            if (!selectedElements) {
+                // Fallback or error if somehow index is bad despite check
+                setStatus('error');
+                alert('Analysis failed: Could not match image to a known graph pattern.');
+                return;
+            }
 
             setStatus('success');
             onUploadSuccess(selectedElements);
