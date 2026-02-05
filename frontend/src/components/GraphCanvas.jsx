@@ -43,10 +43,11 @@ const GraphCanvas = ({ elements, setElements }) => {
         {
             selector: 'edge',
             style: {
-                'width': 3,
-                'line-color': '#cbd5e1',
-                'target-arrow-color': '#cbd5e1',
+                'width': 4,
+                'line-color': '#94a3b8',
+                'target-arrow-color': '#94a3b8',
                 'target-arrow-shape': 'triangle',
+                'arrow-scale': 1.5,
                 'curve-style': 'bezier',
                 'label': 'data(weight)',
                 'font-size': '16px',
