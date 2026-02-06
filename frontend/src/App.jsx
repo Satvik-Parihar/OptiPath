@@ -156,23 +156,27 @@ function App() {
       }));
     } else if (algo === 'floyd') {
       const step = simulationData.steps[currentStep];
-      // Updated backend provides k, i, j in the step for updates
       const k = step.k;
-      const i = step.i;
-      const j = step.j;
+      const isInitialOrDone = k === 'Initial' || k === 'Done';
 
       setElements(prevElements => prevElements.map(el => {
         if (!el.data.source) {
           let classes = '';
-          if (el.data.id === k) classes = 'node-active'; // Pivot
-          else if (el.data.id === i || el.data.id === j) classes = 'node-visited'; // Being updated
+          if (!isInitialOrDone && el.data.id === k) classes = 'node-active'; // Pivot
           return { ...el, classes };
         }
-        // Preserve undirected class for edges
+
+        // Edge styling
         const classList = [];
         if ((el.classes || '').includes('undirected')) {
           classList.push('undirected');
         }
+
+        // Highlight edges connected to the pivot node k
+        if (!isInitialOrDone && (el.data.source === k || el.data.target === k)) {
+          classList.push('shortest-path-edge');
+        }
+
         return { ...el, classes: classList.join(' ') };
       }));
     }

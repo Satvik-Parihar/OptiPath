@@ -103,35 +103,31 @@ const solveFloydWarshall = (req, res) => {
     // Initial state (Adjacency Matrix)
     steps.push({
         type: 'initial',
-        k: null,
+        k: 'Initial',
         matrix: JSON.parse(JSON.stringify(dist)),
         nodeOrder: nodeIds
     });
 
     for (let k = 0; k < n; k++) {
-        // Optional: Step indicating we are now using node k as pivot
-        // steps.push({ type: 'pivot', k: nodeIds[k], matrix: JSON.parse(JSON.stringify(dist)), nodeOrder: nodeIds });
-
+        // We will capture the state AFTER processing pivot k
         for (let i = 0; i < n; i++) {
             for (let j = 0; j < n; j++) {
                 if (dist[i][k] !== Infinity && dist[k][j] !== Infinity) {
                     if (dist[i][k] + dist[k][j] < dist[i][j]) {
                         dist[i][j] = dist[i][k] + dist[k][j];
                         next[i][j] = next[i][k];
-
-                        // Record step on update
-                        steps.push({
-                            type: 'update',
-                            k: nodeIds[k],
-                            i: nodeIds[i],
-                            j: nodeIds[j],
-                            matrix: JSON.parse(JSON.stringify(dist)),
-                            nodeOrder: nodeIds
-                        });
                     }
                 }
             }
         }
+
+        // Record step after checking all i, j for this Pivot k
+        steps.push({
+            type: 'step',
+            k: nodeIds[k],
+            matrix: JSON.parse(JSON.stringify(dist)),
+            nodeOrder: nodeIds
+        });
     }
 
     // Final state
