@@ -23,20 +23,20 @@ describe('App Component', () => {
         render(<App />);
 
         // Check for title
-        expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/AlgoPath/i);
+        expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/OptiPath/i);
         expect(screen.getByText(/Algorithm Visualizer/i)).toBeInTheDocument();
     });
 
     it('renders the visualizer view by default', () => {
         render(<App />);
-        expect(screen.getByText(/Editor/i).closest('button')).toHaveClass('active');
+        expect(screen.getByRole('button', { name: /Editor/i })).toHaveClass('active');
     });
 
     it('switches views when navigation buttons are clicked', () => {
         render(<App />);
 
-        const theoryBtn = screen.getByText(/Theory/i).closest('button');
-        const editorBtn = screen.getByText(/Editor/i).closest('button');
+        const theoryBtn = screen.getByRole('button', { name: /Theory/i });
+        const editorBtn = screen.getByRole('button', { name: /Editor/i });
 
         fireEvent.click(theoryBtn);
         expect(theoryBtn).toHaveClass('active');

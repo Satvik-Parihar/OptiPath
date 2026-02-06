@@ -21,7 +21,6 @@ function App() {
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [startNode, setStartNode] = useState('1');
-  const [isDirected, setIsDirected] = useState(true);
   const [edgeInput, setEdgeInput] = useState('');
 
   /* Removed addEdge */
@@ -48,7 +47,7 @@ function App() {
         nodes,
         edges,
         startNode: type === 'dijkstra' ? startNode : undefined,
-        isDirected: isDirected
+        isDirected: !isUndirected
       });
 
       setSimulationData(res.data);
@@ -127,9 +126,17 @@ function App() {
             return path;
           };
 
+          // Check if graph is undirected (has edges with 'undirected' class)
+          const isUndirected = elements.some(el => el.classes && el.classes.includes('undirected'));
+          const isDirected = !isUndirected;
+
           const activePath = getPathToNode(currentNode, currentPrevious);
           const isActivePath = activePath.some(
             p => (p.from === source && p.to === target) || (!isDirected && p.from === target && p.to === source)
+          );
+
+          const isExploring = exploringEdges.some(
+            e => (e.from === source && e.to === target) || (!isDirected && e.from === target && e.to === source)
           );
 
           // Check if edge is part of the general shortest path tree
@@ -224,7 +231,7 @@ function App() {
                 )}
 
                 <div style={{ flex: 1, minHeight: 0 }}>
-                  <GraphCanvas elements={elements} setElements={setElements} isDirected={isDirected} />
+                  <GraphCanvas elements={elements} setElements={setElements} />
                 </div>
               </div>
 
@@ -266,17 +273,7 @@ function App() {
                       </select>
                     </div>
 
-                    <div style={{ marginBottom: '20px' }}>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-                        <input
-                          type="checkbox"
-                          checked={isDirected}
-                          onChange={(e) => setIsDirected(e.target.checked)}
-                          style={{ width: '16px', height: '16px', accentColor: 'var(--primary)' }}
-                        />
-                        <span style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-main)' }}>Directed Graph</span>
-                      </label>
-                    </div>
+
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '12px' }}>
                       <button

@@ -19,8 +19,8 @@ const GraphCanvas = ({ elements, setElements }) => {
                 'label': 'data(label)',
                 'background-color': '#fff',
                 'border-width': '3px',
-                'border-color': 'var(--secondary)',
-                'color': 'var(--text-main)',
+                'border-color': '#0f766e', // --secondary
+                'color': '#1c1917', // --text-main
                 'font-size': '16px',
                 'font-weight': '700',
                 'text-valign': 'center',
@@ -35,7 +35,7 @@ const GraphCanvas = ({ elements, setElements }) => {
         {
             selector: 'node:selected',
             style: {
-                'border-color': 'var(--primary)',
+                'border-color': '#c2410c', // --primary
                 'border-width': '4px',
                 'background-color': '#fff7ed'
             }
@@ -70,8 +70,8 @@ const GraphCanvas = ({ elements, setElements }) => {
         {
             selector: '.shortest-path-node',
             style: {
-                'background-color': 'var(--primary)',
-                'border-color': 'var(--primary)',
+                'background-color': '#c2410c', // --primary
+                'border-color': '#c2410c', // --primary
                 'color': '#fff',
                 'width': '65px',
                 'height': '65px',
@@ -82,7 +82,7 @@ const GraphCanvas = ({ elements, setElements }) => {
             selector: '.node-active',
             style: {
                 'background-color': '#fff7ed',
-                'border-color': 'var(--primary)',
+                'border-color': '#c2410c', // --primary
                 'border-width': '5px',
                 'width': '65px',
                 'height': '65px',
@@ -93,17 +93,26 @@ const GraphCanvas = ({ elements, setElements }) => {
             selector: '.node-visited',
             style: {
                 'background-color': '#f0fdf4',
-                'border-color': 'var(--secondary)',
+                'border-color': '#0f766e', // --secondary
                 'border-width': '4px'
             }
         },
         {
             selector: '.shortest-path-edge',
             style: {
-                'line-color': 'var(--primary)',
+                'line-color': '#c2410c', // --primary
                 'width': 6,
-                'target-arrow-color': 'var(--primary)',
+                'target-arrow-color': '#c2410c', // --primary
                 'z-index': 10
+            }
+        },
+        {
+            selector: '.spt-edge',
+            style: {
+                'line-color': '#99f6e4', // Teal 200 - Faint tree color
+                'width': 3,
+                'target-arrow-color': '#99f6e4',
+                'z-index': 8
             }
         },
         {
