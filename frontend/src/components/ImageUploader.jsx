@@ -116,6 +116,7 @@ const ImageUploader = ({ onUploadSuccess }) => {
                     { data: { id: 'B-F', source: 'B', target: 'F', weight: '13' }, classes: 'undirected' },
                     { data: { id: 'D-F', source: 'D', target: 'F', weight: '6' }, classes: 'undirected' },
                     { data: { id: 'D-G', source: 'D', target: 'G', weight: '3' }, classes: 'undirected' },
+                    { data: { id: 'D-X', source: 'D', target: 'X', weight: '2' }, classes: 'undirected' },
                     { data: { id: 'D-Y', source: 'D', target: 'Y', weight: '1' }, classes: 'undirected' },
                     { data: { id: 'F-G', source: 'F', target: 'G', weight: '2' }, classes: 'undirected' },
                     { data: { id: 'F-H', source: 'F', target: 'H', weight: '3' }, classes: 'undirected' },
