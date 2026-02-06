@@ -44,44 +44,31 @@ const solveDijkstra = (req, res) => {
         if (visited.has(u)) continue;
         visited.add(u);
 
-        // Record a step when a node is picked
-        steps.push({
-            currentNode: u,
-            distances: { ...distances },
-            previous: { ...previous },
-            visited: Array.from(visited),
-            exploring: []
-        });
+        // Record state at the start of examining `u`
+        // exploring: [] because we want to show the state *before* relaxing neighbors or *summary* after?
+        // User wants "table" style. A table row usually corresponds to the state AFTER relaxing neighbors of the chosen node.
 
         for (const neighbor of adj[u]) {
             const v = neighbor.to;
             const weight = neighbor.weight;
             const alt = distances[u] + weight;
 
-            // Add exploration animation info
-            steps.push({
-                currentNode: u,
-                distances: { ...distances },
-                previous: { ...previous },
-                visited: Array.from(visited),
-                exploring: [{ from: u, to: v, weight }]
-            });
-
             if (alt < distances[v]) {
                 distances[v] = alt;
                 previous[v] = u;
                 pq.push([alt, v]);
-
-                // Record step AFTER update to show value change
-                steps.push({
-                    currentNode: u,
-                    distances: { ...distances },
-                    previous: { ...previous },
-                    visited: Array.from(visited),
-                    exploring: [{ from: u, to: v, weight }]
-                });
             }
         }
+
+        // Record step after all relaxations for this node are done. 
+        // This corresponds to one "row" in a standard Dijkstra table.
+        steps.push({
+            currentNode: u,
+            distances: { ...distances },
+            previous: { ...previous },
+            visited: Array.from(visited),
+            exploring: [] // No transient highlighting needed for table-view
+        });
     }
 
     res.json({ distances, previous, steps });
