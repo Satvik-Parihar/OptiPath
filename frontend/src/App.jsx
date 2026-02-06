@@ -161,7 +161,12 @@ function App() {
         if (!el.data.source) {
           return { ...el, classes: el.data.id === k ? 'node-active' : '' };
         }
-        return { ...el, classes: '' };
+        // Preserve undirected class for edges
+        const classList = [];
+        if ((el.classes || '').includes('undirected')) {
+          classList.push('undirected');
+        }
+        return { ...el, classes: classList.join(' ') };
       }));
     }
   }, [currentStep, simulationData, algo]);
