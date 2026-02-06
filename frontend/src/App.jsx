@@ -142,12 +142,16 @@ function App() {
           // Check if edge is part of the general shortest path tree
           const isSPT = currentPrevious[target] === source || (!isDirected && currentPrevious[source] === target);
 
-          let className = '';
-          if (isActivePath) className = 'shortest-path-edge';
-          else if (isSPT) className = 'spt-edge';
-          else if (isExploring) className = 'edge-exploring';
+          const classList = [];
+          if ((el.classes || '').includes('undirected')) {
+            classList.push('undirected');
+          }
 
-          return { ...el, classes: className };
+          if (isActivePath) classList.push('shortest-path-edge');
+          else if (isSPT) classList.push('spt-edge');
+          else if (isExploring) classList.push('edge-exploring');
+
+          return { ...el, classes: classList.join(' ') };
         }
       }));
     } else if (algo === 'floyd') {
