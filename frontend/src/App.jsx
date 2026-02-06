@@ -27,7 +27,11 @@ function App() {
 
   const runAlgorithm = async (type) => {
     setLoading(true);
+    // Reset previous simulation state
+    setSimulationData(null);
+    setCurrentStep(0);
     setAlgo(type);
+
     try {
       const nodes = elements.filter(el => !el.data.source).map(el => ({ id: el.data.id }));
       const edges = elements.filter(el => el.data.source).map(el => ({
@@ -52,6 +56,7 @@ function App() {
     } catch (err) {
       alert('Error running algorithm. Check console.');
       console.error(err);
+      setAlgo(null);
     }
     setLoading(false);
   };
@@ -76,18 +81,29 @@ function App() {
     }
   };
 
+  const handleReset = () => {
+    setSimulationData(null);
+    setAlgo(null);
+    setCurrentStep(0);
+    // Clear classes from elements but preserve 'undirected' which is part of graph type
+    setElements(prev => prev.map(el => ({
+      ...el,
+      classes: (el.classes || '').split(' ').filter(c => c === 'undirected').join(' ')
+    })));
+  };
+
   // Effect to highlight graph during simulation
   useEffect(() => {
-    if (!simulationData) return;
+    if (!simulationData || !simulationData.steps || !simulationData.steps[currentStep]) return;
 
     if (algo === 'dijkstra') {
       const step = simulationData.steps[currentStep];
-      const visitedNodes = step.visited;
+      const visitedNodes = step.visited || [];
       const currentNode = step.currentNode;
-      const currentPrevious = step.previous || {}; // Use step-specific previous map
+      const currentPrevious = step.previous || {};
       const exploringEdges = step.exploring || [];
 
-      const newElements = elements.map(el => {
+      setElements(prevElements => prevElements.map(el => {
         if (!el.data.source) {
           // Node styling
           let className = '';
@@ -99,12 +115,10 @@ function App() {
           const target = el.data.target;
           const source = el.data.source;
 
-          // Check if edge is currently being explored
           const isExploring = exploringEdges.some(
             e => (e.from === source && e.to === target) || (e.from === target && e.to === source)
           );
 
-          // Check if edge is part of the current shortest path tree
           const isPath = currentPrevious[target] === source || currentPrevious[source] === target;
 
           let className = '';
@@ -113,19 +127,16 @@ function App() {
 
           return { ...el, classes: className };
         }
-      });
-      setElements(newElements);
+      }));
     } else if (algo === 'floyd') {
-      // ... existing floyd logic ...
       const step = simulationData.steps[currentStep];
       const k = step.k;
-      const newElements = elements.map(el => {
+      setElements(prevElements => prevElements.map(el => {
         if (!el.data.source) {
           return { ...el, classes: el.data.id === k ? 'node-active' : '' };
         }
         return { ...el, classes: '' };
-      });
-      setElements(newElements);
+      }));
     }
   }, [currentStep, simulationData, algo]);
 
@@ -190,7 +201,7 @@ function App() {
                       <button onClick={nextStep} disabled={currentStep === simulationData.steps.length - 1} className="btn-secondary" style={{ width: '36px', height: '36px', padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <ChevronRight size={18} />
                       </button>
-                      <button onClick={() => { setSimulationData(null); setAlgo(null) }} className="btn-secondary" style={{ color: '#ef4444', borderColor: '#fee2e2', background: '#fef2f2', padding: '0 12px', height: '36px', fontSize: '13px', gap: '6px', display: 'flex', alignItems: 'center' }}>
+                      <button onClick={handleReset} className="btn-secondary" style={{ color: '#ef4444', borderColor: '#fee2e2', background: '#fef2f2', padding: '0 12px', height: '36px', fontSize: '13px', gap: '6px', display: 'flex', alignItems: 'center' }}>
                         <RotateCcw size={14} /> Reset
                       </button>
                     </div>
@@ -207,59 +218,59 @@ function App() {
                   padding: '32px',
                   // overflow: 'hidden' // removing hidden overflow to allow scrolling if needed
                 }}>
-                  <h3 style={{ marginBottom: '20px', fontSize: '18px', color: 'var(--text-main)', flexShrink: 0 }}>Configuration</h3>
+                  <div style={{ display: !simulationData ? 'block' : 'none' }}>
+                    <h3 style={{ marginBottom: '20px', fontSize: '18px', color: 'var(--text-main)', flexShrink: 0 }}>Configuration</h3>
 
-                  {!simulationData ? (
-                    <>
-                      <ImageUploader onUploadSuccess={(newElements) => setElements(newElements)} />
+                    <ImageUploader onUploadSuccess={(newElements) => setElements(newElements)} />
 
-                      <div style={{ textAlign: 'center', margin: '16px 0' }}>
-                        <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: '600' }}>OR</span>
+                    <div style={{ textAlign: 'center', margin: '16px 0' }}>
+                      <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: '600' }}>OR</span>
+                    </div>
+
+                    <button
+                      onClick={() => setElements([{ data: { id: '1', label: '1' }, position: { x: 400, y: 300 } }])}
+                      className="btn-secondary"
+                      style={{ width: '100%', justifyContent: 'center', marginBottom: '24px', borderStyle: 'dashed', background: 'rgba(99, 102, 241, 0.05)' }}
+                    >
+                      <Plus size={18} /> Create Custom Graph
+                    </button>
+
+                    <div style={{ marginTop: '12px', marginBottom: '12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                        <label style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: '700', letterSpacing: '0.05em' }}>START NODE</label>
                       </div>
-
-                      <button
-                        onClick={() => setElements([{ data: { id: '1', label: '1' }, position: { x: 400, y: 300 } }])}
-                        className="btn-secondary"
-                        style={{ width: '100%', justifyContent: 'center', marginBottom: '24px', borderStyle: 'dashed', background: 'rgba(99, 102, 241, 0.05)' }}
+                      <select
+                        className="select-input"
+                        style={{ padding: '8px 12px', fontSize: '13px' }}
+                        value={startNode}
+                        onChange={(e) => setStartNode(e.target.value)}
                       >
-                        <Plus size={18} /> Create Custom Graph
+                        {elements.filter(el => !el.data.source).map(el => (
+                          <option key={el.data.id} value={el.data.id}>Node {el.data.label}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '12px' }}>
+                      <button
+                        onClick={() => runAlgorithm('dijkstra')}
+                        className="btn-primary"
+                        style={{ justifyContent: 'center' }}
+                        disabled={loading || elements.length === 0}
+                      >
+                        {loading ? 'Processing...' : 'Run Dijkstra Algorithm'}
                       </button>
+                      <button
+                        onClick={() => runAlgorithm('floyd')}
+                        className="btn-floyd"
+                        disabled={loading || elements.length === 0}
+                      >
+                        Run Floyd-Warshall
+                      </button>
+                    </div>
+                  </div>
 
-                      <div style={{ marginTop: '12px', marginBottom: '12px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-                          <label style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: '700', letterSpacing: '0.05em' }}>START NODE</label>
-                        </div>
-                        <select
-                          className="select-input"
-                          style={{ padding: '8px 12px', fontSize: '13px' }}
-                          value={startNode}
-                          onChange={(e) => setStartNode(e.target.value)}
-                        >
-                          {elements.filter(el => !el.data.source).map(el => (
-                            <option key={el.data.id} value={el.data.id}>Node {el.data.label}</option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '12px' }}>
-                        <button
-                          onClick={() => runAlgorithm('dijkstra')}
-                          className="btn-primary"
-                          style={{ justifyContent: 'center' }}
-                          disabled={loading || elements.length === 0}
-                        >
-                          {loading ? 'Processing...' : 'Run Dijkstra Algorithm'}
-                        </button>
-                        <button
-                          onClick={() => runAlgorithm('floyd')}
-                          className="btn-floyd"
-                          disabled={loading || elements.length === 0}
-                        >
-                          Run Floyd-Warshall
-                        </button>
-                      </div>
-                    </>
-                  ) : (
+                  {simulationData && (
                     <div className="simulation-info">
                       <h4 style={{ color: 'var(--text-main)', marginBottom: '20px', fontSize: '18px', fontFamily: 'Fraunces' }}>
                         {algo === 'dijkstra' ? 'Dijkstra Analysis' : 'Floyd-Warshall Analysis'}
@@ -270,11 +281,16 @@ function App() {
                           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                             <div style={{ padding: '16px', background: '#fff7ed', borderRadius: '16px', border: '1px solid #ffedd5' }}>
                               <span style={{ fontSize: '11px', color: '#c2410c', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.05em' }}>Current Node</span>
-                              <p style={{ fontSize: '20px', fontWeight: '700', color: '#9a3412', marginTop: '4px' }}>{simulationData.steps[currentStep].currentNode}</p>
+                              <p style={{ fontSize: '20px', fontWeight: '700', color: '#9a3412', marginTop: '4px' }}>
+                                {simulationData?.steps[currentStep]?.currentNode || '-'}
+                              </p>
                             </div>
                             <div style={{ padding: '16px', background: '#f0fdf4', borderRadius: '16px', border: '1px solid #dcfce7' }}>
                               <span style={{ fontSize: '11px', color: '#15803d', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.05em' }}>Visited</span>
-                              <p style={{ fontSize: '20px', fontWeight: '700', color: '#166534', marginTop: '4px' }}>{simulationData.steps[currentStep].visited.length} <span style={{ fontSize: '14px', color: '#86efac' }}>/ {elements.filter(e => !e.data.source).length}</span></p>
+                              <p style={{ fontSize: '20px', fontWeight: '700', color: '#166534', marginTop: '4px' }}>
+                                {simulationData?.steps[currentStep]?.visited?.length || 0}
+                                <span style={{ fontSize: '14px', color: '#86efac' }}>/ {elements.filter(e => !e.data.source).length}</span>
+                              </p>
                             </div>
                           </div>
 
@@ -290,19 +306,19 @@ function App() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {Object.entries(simulationData.steps[currentStep].distances).map(([id, d]) => (
+                                  {Object.entries(simulationData?.steps[currentStep]?.distances || {}).map(([id, d]) => (
                                     <tr key={id} style={{
-                                      background: simulationData.steps[currentStep].currentNode === id ? '#fff7ed' : 'white',
+                                      background: simulationData?.steps[currentStep]?.currentNode === id ? '#fff7ed' : 'white',
                                       transition: 'background 0.2s'
                                     }}>
                                       <td style={{ padding: '12px', borderBottom: '1px solid var(--border)', color: 'var(--text-main)' }}>
-                                        <b style={{ color: simulationData.steps[currentStep].currentNode === id ? 'var(--primary)' : 'inherit' }}>{id}</b>
+                                        <b style={{ color: simulationData?.steps[currentStep]?.currentNode === id ? 'var(--primary)' : 'inherit' }}>{id}</b>
                                       </td>
                                       <td style={{ padding: '12px', textAlign: 'right', borderBottom: '1px solid var(--border)', fontWeight: '600', color: d === null || d === Infinity ? 'var(--text-light)' : 'var(--text-main)' }}>
                                         {d === null || d === Infinity ? '∞' : d}
                                       </td>
                                       <td style={{ padding: '12px', textAlign: 'right', borderBottom: '1px solid var(--border)', color: 'var(--text-muted)' }}>
-                                        {simulationData.steps[currentStep].previous && simulationData.steps[currentStep].previous[id] ? simulationData.steps[currentStep].previous[id] : '-'}
+                                        {simulationData?.steps[currentStep]?.previous && simulationData?.steps[currentStep]?.previous[id] ? simulationData?.steps[currentStep]?.previous[id] : '-'}
                                       </td>
                                     </tr>
                                   ))}
@@ -317,7 +333,9 @@ function App() {
                         <div>
                           <div style={{ padding: '16px', background: '#f0fdfa', borderRadius: '16px', border: '1px solid #ccfbf1', marginBottom: '20px' }}>
                             <span style={{ fontSize: '11px', color: '#0f766e', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.05em' }}>Pivot Node (K)</span>
-                            <p style={{ fontSize: '20px', fontWeight: '700', color: '#115e59', marginTop: '4px' }}>Node {simulationData.steps[currentStep].k}</p>
+                            <p style={{ fontSize: '20px', fontWeight: '700', color: '#115e59', marginTop: '4px' }}>
+                              {simulationData?.steps[currentStep]?.k === 'Initial' ? 'Initial Matrix' : `Node ${simulationData?.steps[currentStep]?.k || ''}`}
+                            </p>
                           </div>
                           <div style={{ overflowX: 'auto', borderRadius: '16px', border: '1px solid var(--border)', boxShadow: 'var(--shadow-sm)' }}>
                             <table style={{ fontSize: '13px', width: '100%', borderCollapse: 'collapse' }}>
@@ -330,7 +348,7 @@ function App() {
                                 </tr>
                               </thead>
                               <tbody>
-                                {simulationData.steps[currentStep].matrix.map((row, i) => (
+                                {simulationData?.steps[currentStep]?.matrix?.map((row, i) => (
                                   <tr key={i}>
                                     <th style={{ padding: '10px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-main)' }}>{simulationData.nodeOrder[i]}</th>
                                     {row.map((val, j) => (
@@ -338,7 +356,7 @@ function App() {
                                         border: '1px solid var(--border)',
                                         padding: '10px',
                                         textAlign: 'center',
-                                        background: (simulationData.nodeOrder[i] === simulationData.steps[currentStep].k || simulationData.nodeOrder[j] === simulationData.steps[currentStep].k) ? '#f0fdfa' : 'white',
+                                        background: (simulationData.nodeOrder[i] === simulationData?.steps[currentStep]?.k || simulationData.nodeOrder[j] === simulationData?.steps[currentStep]?.k) ? '#f0fdfa' : 'white',
                                         fontWeight: val !== Infinity ? '600' : '400',
                                         color: val === Infinity ? 'var(--text-light)' : 'var(--text-main)'
                                       }}>

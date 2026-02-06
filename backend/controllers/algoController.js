@@ -87,6 +87,13 @@ const solveFloydWarshall = (req, res) => {
 
     const steps = [];
 
+    // Initial state (Adjacency Matrix)
+    steps.push({
+        k: 'Initial',
+        matrix: JSON.parse(JSON.stringify(dist)),
+        nodeOrder: nodeIds
+    });
+
     for (let k = 0; k < n; k++) {
         for (let i = 0; i < n; i++) {
             for (let j = 0; j < n; j++) {

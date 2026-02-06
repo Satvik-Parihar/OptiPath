@@ -79,6 +79,25 @@ const GraphCanvas = ({ elements, setElements }) => {
             }
         },
         {
+            selector: '.node-active',
+            style: {
+                'background-color': '#fff7ed',
+                'border-color': 'var(--primary)',
+                'border-width': '5px',
+                'width': '65px',
+                'height': '65px',
+                'z-index': 11
+            }
+        },
+        {
+            selector: '.node-visited',
+            style: {
+                'background-color': '#f0fdf4',
+                'border-color': 'var(--secondary)',
+                'border-width': '4px'
+            }
+        },
+        {
             selector: '.shortest-path-edge',
             style: {
                 'line-color': 'var(--primary)',
