@@ -156,10 +156,17 @@ function App() {
       }));
     } else if (algo === 'floyd') {
       const step = simulationData.steps[currentStep];
+      // Updated backend provides k, i, j in the step for updates
       const k = step.k;
+      const i = step.i;
+      const j = step.j;
+
       setElements(prevElements => prevElements.map(el => {
         if (!el.data.source) {
-          return { ...el, classes: el.data.id === k ? 'node-active' : '' };
+          let classes = '';
+          if (el.data.id === k) classes = 'node-active'; // Pivot
+          else if (el.data.id === i || el.data.id === j) classes = 'node-visited'; // Being updated
+          return { ...el, classes };
         }
         // Preserve undirected class for edges
         const classList = [];

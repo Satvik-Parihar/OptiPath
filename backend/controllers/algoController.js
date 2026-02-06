@@ -102,29 +102,45 @@ const solveFloydWarshall = (req, res) => {
 
     // Initial state (Adjacency Matrix)
     steps.push({
-        k: 'Initial',
+        type: 'initial',
+        k: null,
         matrix: JSON.parse(JSON.stringify(dist)),
         nodeOrder: nodeIds
     });
 
     for (let k = 0; k < n; k++) {
+        // Optional: Step indicating we are now using node k as pivot
+        // steps.push({ type: 'pivot', k: nodeIds[k], matrix: JSON.parse(JSON.stringify(dist)), nodeOrder: nodeIds });
+
         for (let i = 0; i < n; i++) {
             for (let j = 0; j < n; j++) {
                 if (dist[i][k] !== Infinity && dist[k][j] !== Infinity) {
                     if (dist[i][k] + dist[k][j] < dist[i][j]) {
                         dist[i][j] = dist[i][k] + dist[k][j];
                         next[i][j] = next[i][k];
+
+                        // Record step on update
+                        steps.push({
+                            type: 'update',
+                            k: nodeIds[k],
+                            i: nodeIds[i],
+                            j: nodeIds[j],
+                            matrix: JSON.parse(JSON.stringify(dist)),
+                            nodeOrder: nodeIds
+                        });
                     }
                 }
             }
         }
-        // Snapshot after considering intermediate node k
-        steps.push({
-            k: nodeIds[k],
-            matrix: JSON.parse(JSON.stringify(dist)),
-            nodeOrder: nodeIds
-        });
     }
+
+    // Final state
+    steps.push({
+        type: 'finished',
+        k: 'Done',
+        matrix: JSON.parse(JSON.stringify(dist)),
+        nodeOrder: nodeIds
+    });
 
     res.json({ matrix: dist, steps, nodeOrder: nodeIds });
 };
