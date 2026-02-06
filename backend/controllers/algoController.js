@@ -11,7 +11,6 @@ const solveDijkstra = (req, res) => {
     nodes.forEach(node => adj[node.id] = []);
     edges.forEach(edge => {
         adj[edge.source].push({ to: edge.target, weight: Number(edge.weight) });
-        // Only add reverse edge if graph is NOT directed
         if (!isDirected) {
             adj[edge.target].push({ to: edge.source, weight: Number(edge.weight) });
         }
@@ -29,6 +28,15 @@ const solveDijkstra = (req, res) => {
     });
     distances[startNode] = 0;
 
+    // Initial step
+    steps.push({
+        currentNode: startNode,
+        distances: { ...distances },
+        previous: { ...previous },
+        visited: [],
+        exploring: []
+    });
+
     while (pq.length > 0) {
         pq.sort((a, b) => a[0] - b[0]);
         const [d, u] = pq.shift();
@@ -36,7 +44,7 @@ const solveDijkstra = (req, res) => {
         if (visited.has(u)) continue;
         visited.add(u);
 
-        // Save step with snapshot of distances and previous pointers
+        // Record a step when a node is picked
         steps.push({
             currentNode: u,
             distances: { ...distances },
@@ -45,20 +53,35 @@ const solveDijkstra = (req, res) => {
             exploring: []
         });
 
-        adj[u].forEach(neighbor => {
+        for (const neighbor of adj[u]) {
             const v = neighbor.to;
             const weight = neighbor.weight;
             const alt = distances[u] + weight;
+
+            // Add exploration animation info
+            steps.push({
+                currentNode: u,
+                distances: { ...distances },
+                previous: { ...previous },
+                visited: Array.from(visited),
+                exploring: [{ from: u, to: v, weight }]
+            });
 
             if (alt < distances[v]) {
                 distances[v] = alt;
                 previous[v] = u;
                 pq.push([alt, v]);
-            }
 
-            // Add exploration step details
-            steps[steps.length - 1].exploring.push({ from: u, to: v, weight });
-        });
+                // Record step AFTER update to show value change
+                steps.push({
+                    currentNode: u,
+                    distances: { ...distances },
+                    previous: { ...previous },
+                    visited: Array.from(visited),
+                    exploring: [{ from: u, to: v, weight }]
+                });
+            }
+        }
     }
 
     res.json({ distances, previous, steps });
@@ -77,12 +100,15 @@ const solveFloydWarshall = (req, res) => {
     edges.forEach(edge => {
         const u = nodeIds.indexOf(edge.source);
         const v = nodeIds.indexOf(edge.target);
+        if (u === -1 || v === -1) return;
+
         dist[u][v] = Number(edge.weight);
-        if (!isDirected) {
-            dist[v][u] = Number(edge.weight); // Undirected
-        }
         next[u][v] = v;
-        next[v][u] = u;
+
+        if (!isDirected) {
+            dist[v][u] = Number(edge.weight);
+            next[v][u] = u;
+        }
     });
 
     const steps = [];
@@ -97,9 +123,11 @@ const solveFloydWarshall = (req, res) => {
     for (let k = 0; k < n; k++) {
         for (let i = 0; i < n; i++) {
             for (let j = 0; j < n; j++) {
-                if (dist[i][k] + dist[k][j] < dist[i][j]) {
-                    dist[i][j] = dist[i][k] + dist[k][j];
-                    next[i][j] = next[i][k];
+                if (dist[i][k] !== Infinity && dist[k][j] !== Infinity) {
+                    if (dist[i][k] + dist[k][j] < dist[i][j]) {
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                        next[i][j] = next[i][k];
+                    }
                 }
             }
         }

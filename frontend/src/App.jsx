@@ -21,6 +21,7 @@ function App() {
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [startNode, setStartNode] = useState('1');
+  const [isDirected, setIsDirected] = useState(true);
   const [edgeInput, setEdgeInput] = useState('');
 
   /* Removed addEdge */
@@ -47,7 +48,7 @@ function App() {
         nodes,
         edges,
         startNode: type === 'dijkstra' ? startNode : undefined,
-        isDirected: !isUndirected
+        isDirected: isDirected
       });
 
       setSimulationData(res.data);
@@ -115,14 +116,28 @@ function App() {
           const target = el.data.target;
           const source = el.data.source;
 
-          const isExploring = exploringEdges.some(
-            e => (e.from === source && e.to === target) || (e.from === target && e.to === source)
+          // Logic to find path to current node
+          const getPathToNode = (target, prevMap) => {
+            const path = [];
+            let curr = target;
+            while (curr && prevMap[curr]) {
+              path.push({ from: prevMap[curr], to: curr });
+              curr = prevMap[curr];
+            }
+            return path;
+          };
+
+          const activePath = getPathToNode(currentNode, currentPrevious);
+          const isActivePath = activePath.some(
+            p => (p.from === source && p.to === target) || (!isDirected && p.from === target && p.to === source)
           );
 
-          const isPath = currentPrevious[target] === source || currentPrevious[source] === target;
+          // Check if edge is part of the general shortest path tree
+          const isSPT = currentPrevious[target] === source || (!isDirected && currentPrevious[source] === target);
 
           let className = '';
-          if (isPath) className = 'shortest-path-edge';
+          if (isActivePath) className = 'shortest-path-edge';
+          else if (isSPT) className = 'spt-edge';
           else if (isExploring) className = 'edge-exploring';
 
           return { ...el, classes: className };
@@ -209,7 +224,7 @@ function App() {
                 )}
 
                 <div style={{ flex: 1, minHeight: 0 }}>
-                  <GraphCanvas elements={elements} setElements={setElements} />
+                  <GraphCanvas elements={elements} setElements={setElements} isDirected={isDirected} />
                 </div>
               </div>
 
@@ -249,6 +264,18 @@ function App() {
                           <option key={el.data.id} value={el.data.id}>Node {el.data.label}</option>
                         ))}
                       </select>
+                    </div>
+
+                    <div style={{ marginBottom: '20px' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                        <input
+                          type="checkbox"
+                          checked={isDirected}
+                          onChange={(e) => setIsDirected(e.target.checked)}
+                          style={{ width: '16px', height: '16px', accentColor: 'var(--primary)' }}
+                        />
+                        <span style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-main)' }}>Directed Graph</span>
+                      </label>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '12px' }}>
